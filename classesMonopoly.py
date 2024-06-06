@@ -1,9 +1,10 @@
 class Jogador:
-    def __init__(self, nome, saldoInicial):
+    def __init__(self, nome, saldoInicial, cor):
         self.nome = nome
         self.posicao = 0  # Posição inicial do jogador no tabuleiro
         self.dinheiro = saldoInicial  # Dinheiro inicial do jogador
         self.propriedades = []  # Lista para armazenar as propriedades do jogador
+        self.cor = cor
 
     def mover(self, casas):
         self.posicao = (self.posicao + casas) % 40  # Há 40 casas no tabuleiro do Monopoly
@@ -50,3 +51,11 @@ class CasaTabuleiro:
         self.width = width
         self.height = height
         self.propriedade = propriedade
+
+class Partida:
+    def __init__(self, jogadores):
+        self.status = "Jogando"
+        self.jogada = 0
+        self.inflacao = 0
+        self.selic = 0.05
+        self.jogadores = jogadores#Array com os jogadores
