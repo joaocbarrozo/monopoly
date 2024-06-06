@@ -1,3 +1,8 @@
+import pygame
+
+black = (0, 0, 0)
+white = (255, 255, 255)
+
 class Jogador:
     def __init__(self, nome, saldoInicial, cor):
         self.nome = nome
@@ -7,7 +12,7 @@ class Jogador:
         self.cor = cor
 
     def mover(self, casas):
-        self.posicao = (self.posicao + casas) % 40  # Há 40 casas no tabuleiro do Monopoly
+        self.posicao = (self.posicao + casas) % 36  # Há 40 casas no tabuleiro do Monopoly
 
     def adicionar_dinheiro(self, quantidade):
         self.dinheiro += quantidade
@@ -33,7 +38,7 @@ class Jogador:
         return f"Nome: {self.nome}, Posição: {self.posicao}, Dinheiro: {self.dinheiro}, Propriedades: {self.propriedades}"
 
 class Propriedade:
-    def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, valor_compra, array_aluguel):
+    def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, valor_compra, array_aluguel, info=None):
         self.cor = cor
         self.borda_cor = borda_cor
         self.titulo = titulo
@@ -42,6 +47,8 @@ class Propriedade:
         self.prorpietario = proprietario# Definir banco para as posições especiais do tabuleiro como inicio, prisão sorte e revez e etc
         self.valor_compra = valor_compra
         self.valor_aluguel = array_aluguel # Array com o valor do aluguel para cada nivel 5 posições
+        self.info = info
+
 
 class CasaTabuleiro:
     def __init__(self, numero, posicao_x, posicao_y, width, height, propriedade):
@@ -59,3 +66,66 @@ class Partida:
         self.inflacao = 0
         self.selic = 0.05
         self.jogadores = jogadores#Array com os jogadores
+        self.jogador_Atual = jogadores[0]
+
+class Button:
+    def __init__(self, color, x, y, width, height, text=''):
+        self.color = color
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.text = text
+
+    def draw(self, screen, outline=None):
+        if outline:
+            pygame.draw.rect(screen, outline, (self.x-2, self.y-2, self.width+4, self.height+4), 0)
+
+        pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height), 0)
+
+        if self.text != '':
+            font = pygame.font.SysFont(None, 20)
+            text = font.render(self.text, 1, black)
+            screen.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))
+
+    def is_over(self, pos):
+        if pos[0] > self.x and pos[0] < self.x + self.width:
+            if pos[1] > self.y and pos[1] < self.y + self.height:
+                return True
+        return False
+    
+    def hover(self, screen):
+ 
+        pygame.mouse.set_cursor(*pygame.cursors.tri_left)
+
+# Classe TextBox
+class TextBox:
+    def __init__(self, x, y, width, height, font_size=20, text='', color=black):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.font = pygame.font.SysFont(None, font_size)
+        self.text = text
+        self.color = color
+
+    def draw(self, screen):
+        lines = []
+        words = self.text.split()
+
+        # Dividindo o texto em linhas
+        line = ''
+        for word in words:
+            if self.font.size(line + word)[0] < self.width:
+                line += word + ' '
+            else:
+                lines.append(line)
+                line = word + ' '
+        lines.append(line)
+
+        # Desenha o texto na tela
+        y = self.y
+        for line in lines:
+            text_surface = self.font.render(line, True, self.color)
+            screen.blit(text_surface, (self.x, y))
+            y += self.font.get_linesize()
