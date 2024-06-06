@@ -2,6 +2,7 @@ import pygame
 import sys
 import classesMonopoly
 import random
+import time
 
 # Inicializar o Pygame
 pygame.init()
@@ -10,8 +11,8 @@ pygame.init()
 screen_info = pygame.display.Info()
 
 # Definir as dimensões da tela com base na resolução do sistema
-screen_width = int(screen_info.current_w * 0.9)
-screen_height = int(screen_info.current_h * 0.9)
+screen_width = int(screen_info.current_w * 0.95)
+screen_height = int(screen_info.current_h * 0.7)
 #Definindo o ponto x inicial do tabuleiro 
 pontoInicial = (max(screen_width, screen_height) - min(screen_width, screen_height)) / 2
 # Calcular o tamanho dos quadrados proporcionalmente
@@ -20,7 +21,8 @@ square_size = min(screen_width, screen_height) // 10  # 1/10 da menor dimensão 
 board_size = square_size * 10
 #Definir o centro do painel do jogo
 painel_center = (screen_width - pontoInicial - board_size) / 2 + pontoInicial + board_size
-
+#Tamanho padrao das fontes
+font_size = int(square_size * 0.3)
 # Definir as cores
 white = (255, 255, 255)
 black = (0, 0, 0)
@@ -34,7 +36,7 @@ gray = (220, 220, 220)
 
 # Criar a tela
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Tela com Quadrados na Borda")
+pygame.display.set_caption("Mundo dos Negócios")
 
 #Inicia os jogadores
 jogador1 = classesMonopoly.Jogador("Dé", 1500, orange)
@@ -46,7 +48,7 @@ jogadores = [jogador1, jogador2, jogador3, jogador4]
 
 #Criar propriedades e outras casas do tabuleiro
 propriedades = [classesMonopoly.Propriedade(yellow, black, "Inicio", "0", 1, "Banco", 150, [150, 200, 250, 300, 350], 
-                                            "Inicio do jogo, sempre que passar por esse ponto\n você receberá um valor em dinheiro"),
+                                            "Inicio do jogo"),
                 classesMonopoly.Propriedade(yellow, black, "Inicio", "1", 1, None, 0, [150, 200, 250, 300, 350]),
                 classesMonopoly.Propriedade(yellow, black, "Inicio", "2", 1, None, 0, [150, 200, 250, 300, 350]),
                 classesMonopoly.Propriedade(yellow, black, "Inicio", "3", 1, None, 0, [150, 200, 250, 300, 350]),
@@ -105,10 +107,14 @@ for i in range(28,36):
     casas.append(classesMonopoly.CasaTabuleiro(i, pontoInicial, 9*square_size - (i-27)*square_size, square_size, square_size, propriedades[i]))
 
 partida = classesMonopoly.Partida(jogadores)
-
+resultado = [1, 6]
 estado = 0
 
-botao_jogar_dados = classesMonopoly.Button(green, painel_center, screen_height * 0.3, 120, 50, "Jogar Dados")
+botao_jogar_dados = classesMonopoly.Button(painel_center - 60, screen_height * 0.3, 120, 50,
+                                           "Jogar Dados", pygame.font.Font(None, font_size), green, red, blue)
+botao_mover = classesMonopoly.Button(painel_center - 60, screen_height * 0.45, 120, 50,
+                                           "Mover", pygame.font.Font(None, font_size), green, red, blue)
+
 
 
 # Função para renderizar o texto em uma superfície separada
@@ -131,18 +137,18 @@ def desenhar_casas_tabuleiro():
         else:    
             pygame.draw.rect(screen, casa.propriedade.cor, (casa.posicao_x + 2, casa.posicao_y + 2, casa.width - 4, casa.height / 3))
         # Desenha o titulo dentro do retângulo superior
-        draw_text_in_rect(casa.propriedade.titulo, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height / 3), pygame.font.Font(None, 24), black)
-        draw_text_in_rect(casa.propriedade.texto, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height), pygame.font.Font(None, 24), black)
+        draw_text_in_rect(casa.propriedade.titulo, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height / 3), pygame.font.Font(None, font_size), black)
+        draw_text_in_rect(casa.propriedade.texto, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height), pygame.font.Font(None, font_size), black)
 
 def desenhar_estatisticas_jogadores():
     for i in range(0,len(jogadores)):
         pygame.draw.rect(screen, black, (5, (screen_height // len(jogadores)) * i, pontoInicial - 5, screen_height // len(jogadores)), 2)
         draw_text_in_rect(jogadores[i].nome, pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.1), 
-                          pygame.font.Font(None, 24), jogadores[i].cor)
+                          pygame.font.Font(None, int(font_size * 1.2)), jogadores[i].cor)
         draw_text_in_rect("Saldo: R$ " + str(jogadores[i].dinheiro) + ",00", pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.3), 
-                          pygame.font.Font(None, 24), jogadores[i].cor)
+                          pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
         draw_text_in_rect("Quantidade Propriedades: " + str(len(jogadores[i].propriedades)), pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.5), 
-                          pygame.font.Font(None, 24), jogadores[i].cor)
+                          pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
 
 def desenhar_painel_jogo():
     #Posição x do painel do lado direito do tabuleiro
@@ -151,8 +157,12 @@ def desenhar_painel_jogo():
     
     if estado == 0:
         draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
-                          pygame.font.Font(None, 24), jogador.cor)
+                          pygame.font.Font(None, font_size), jogador.cor)
         botao_jogar_dados.draw(screen)
+    elif estado == 1:
+        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
+                          pygame.font.Font(None, font_size), jogador.cor)
+        botao_mover.draw(screen)
 
 def exibir_info_posicao_atual():
     posicao = partida.jogador_Atual.posicao
@@ -160,11 +170,11 @@ def exibir_info_posicao_atual():
     if casas[posicao].propriedade.info != None:
         draw_text_in_rect(propriedade.info, pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.5, 
                                                                        screen_width - pontoInicial - board_size - 10, screen_height * 0.5), 
-                                                                        pygame.font.Font(None, 24), black) 
+                                                                        pygame.font.Font(None, font_size), black) 
     else:
         draw_text_in_rect(f"{propriedade.titulo} valor R$ {propriedade.valor_compra},00", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.5, screen_width - pontoInicial - board_size - 10, screen_height * 0.5), 
-                        pygame.font.Font(None, 24), black)
+                        pygame.font.Font(None, font_size), black)
 
 def desenhar_pinos():
     #Os pinos ocuparão apenas a parte branca dos quadrados
@@ -186,6 +196,47 @@ def jogar_dados():
     dados = [dado1, dado2]
     return dados
 
+def desenhar_numeros_dado(pos_x, pos_y, dado_size, valor):
+    if valor == 1:
+        pygame.draw.circle(screen, black, (pos_x + dado_size/2, pos_y + dado_size/2), dado_size/12)
+    elif valor == 2:
+        pygame.draw.circle(screen, black, (pos_x + dado_size/4, pos_y + dado_size/4), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + 3 * dado_size/4, pos_y + 3 * dado_size/4), dado_size/12)
+    elif valor == 3:
+        pygame.draw.circle(screen, black, (pos_x + dado_size/4, pos_y + dado_size/4), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + dado_size/2, pos_y + dado_size/2), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + 3 * dado_size/4, pos_y + 3 * dado_size/4), dado_size/12)
+    elif valor == 4:
+        pygame.draw.circle(screen, black, (pos_x + dado_size/4, pos_y + dado_size/4), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + 3 * dado_size/4, pos_y + dado_size/4), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + dado_size/4, pos_y + 3 * dado_size/4), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + 3 * dado_size/4, pos_y + 3 * dado_size/4), dado_size/12)
+    elif valor == 5:
+        pygame.draw.circle(screen, black, (pos_x + dado_size/4, pos_y + dado_size/4), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + 3 * dado_size/4, pos_y + dado_size/4), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + dado_size/2, pos_y + dado_size/2), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + dado_size/4, pos_y + 3 * dado_size/4), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + 3 * dado_size/4, pos_y + 3 * dado_size/4), dado_size/12)
+    elif valor == 6:
+        pygame.draw.circle(screen, black, (pos_x + dado_size/4, pos_y + dado_size/4), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + 3 * dado_size/4, pos_y + dado_size/4), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + dado_size/4, pos_y + dado_size/2), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + 3 * dado_size/4, pos_y + dado_size/2), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + dado_size/4, pos_y + 3 * dado_size/4), dado_size/12)
+        pygame.draw.circle(screen, black, (pos_x + 3 * dado_size/4, pos_y + 3 * dado_size/4), dado_size/12)
+ 
+    
+def desenhar_dados(resultado):
+    dado_size = square_size * 0.6
+    dado1_px = screen_width /2 - dado_size
+    dado1_py = screen_height /2 - dado_size
+    dado2_px = screen_width /2 + dado_size
+    dado2_py = screen_height /2 - dado_size
+    pygame.draw.rect(screen, black,(dado1_px, dado1_py, dado_size, dado_size), 2)
+    pygame.draw.rect(screen, black,(dado2_px, dado2_py, dado_size, dado_size), 2)
+    desenhar_numeros_dado(dado1_px, dado1_py, dado_size, resultado[0])
+    desenhar_numeros_dado(dado2_px, dado2_py, dado_size, resultado[1])
+
 # Loop principal do jogo
 while partida.status == "Jogando":
     #Posição do mouse
@@ -195,30 +246,28 @@ while partida.status == "Jogando":
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit() 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            if botao_jogar_dados.is_over(pos):
+        if estado == 0:
+            if botao_jogar_dados.handle_event(event):
                 resultado = jogar_dados()
-                print(resultado)
+                estado = 1
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        if estado == 1:
+            if botao_mover.handle_event(event):
                 partida.jogador_Atual.mover(resultado[0] + resultado[1])
-
-    
-    # Altera o cursor quando o mouse estiver sobre o botão
-    if botao_jogar_dados.is_over(pos):
-        botao_jogar_dados.hover(screen)
-    else:
-        pygame.mouse.set_cursor(*pygame.cursors.arrow)
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+            
     # Preencher a tela com a cor branca
     screen.fill(white)
     
     # Desenhar o tabuleiro
     desenhar_casas_tabuleiro()
-    
+    desenhar_dados(resultado)
     desenhar_pinos()
     desenhar_estatisticas_jogadores()
     #Verificar estado da jogada, jogar dados, mover, decidir, terminar
     desenhar_painel_jogo()
     exibir_info_posicao_atual()
+    
 
     # Atualizar a tela
     pygame.display.update()

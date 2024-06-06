@@ -1,4 +1,5 @@
 import pygame
+import time
 
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -12,7 +13,7 @@ class Jogador:
         self.cor = cor
 
     def mover(self, casas):
-        self.posicao = (self.posicao + casas) % 36  # Há 40 casas no tabuleiro do Monopoly
+        self.posicao = (self.posicao + casas) % 36  # Há 36 casas no tabuleiro do Monopoly
 
     def adicionar_dinheiro(self, quantidade):
         self.dinheiro += quantidade
@@ -69,34 +70,45 @@ class Partida:
         self.jogador_Atual = jogadores[0]
 
 class Button:
-    def __init__(self, color, x, y, width, height, text=''):
-        self.color = color
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
+    def __init__(self, x, y, width, height, text, font, base_color, hover_color, click_color):
+        self.rect = pygame.Rect(x, y, width, height)
         self.text = text
+        self.font = font
+        self.base_color = base_color
+        self.hover_color = hover_color
+        self.click_color = click_color
+        self.current_color = base_color
+        self.hovered = False 
 
-    def draw(self, screen, outline=None):
-        if outline:
-            pygame.draw.rect(screen, outline, (self.x-2, self.y-2, self.width+4, self.height+4), 0)
+    def draw(self, screen):
+        # Draw the button
+        pygame.draw.rect(screen, self.current_color, self.rect)
+        # Draw the text
+        text_surface = self.font.render(self.text, True, (255, 255, 255))
+        text_rect = text_surface.get_rect(center=self.rect.center)
+        screen.blit(text_surface, text_rect)
 
-        pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height), 0)
-
-        if self.text != '':
-            font = pygame.font.SysFont(None, 20)
-            text = font.render(self.text, 1, black)
-            screen.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))
-
-    def is_over(self, pos):
-        if pos[0] > self.x and pos[0] < self.x + self.width:
-            if pos[1] > self.y and pos[1] < self.y + self.height:
-                return True
+    def handle_event(self, event):
+        mouse_pos = pygame.mouse.get_pos()
+        if self.rect.collidepoint(mouse_pos):
+            if not self.hovered:  # If the mouse just started hovering
+                self.hovered = True
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)  # Change to hand cursor
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:  # Left mouse button
+                    self.current_color = self.click_color
+                    return True  # Button clicked
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:  # Left mouse button
+                    self.current_color = self.hover_color
+            else:
+                self.current_color = self.hover_color
+        else:
+            if self.hovered:  # If the mouse just stopped hovering
+                self.hovered = False
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  # Change to arrow cursor
+            self.current_color = self.base_color
         return False
-    
-    def hover(self, screen):
- 
-        pygame.mouse.set_cursor(*pygame.cursors.tri_left)
 
 # Classe TextBox
 class TextBox:
