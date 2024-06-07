@@ -22,8 +22,13 @@ class Jogador:
         self.dinheiro -= quantidade
 
     def comprar_propriedade(self, propriedade):
-        self.propriedades.append(propriedade)
-        self.remover_dinheiro(propriedade.preco)
+        if self.dinheiro >= propriedade.valor_compra:
+            self.propriedades.append(propriedade)
+            self.remover_dinheiro(propriedade.valor_compra)
+            propriedade.borda_cor = self.cor
+            propriedade.proprietario = self
+            return True
+        return False
 
     def pagar_aluguel(self, proprietario, aluguel):
         if self.dinheiro >= aluguel:

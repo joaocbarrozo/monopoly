@@ -105,18 +105,22 @@ resultado = [1, 6]
 estado = 0
 rodada = 1
 
-botao_jogar_dados = classesMonopoly.Button(painel_center - 60, screen_height * 0.3, 120, 50,
+botao_jogar_dados = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
                                            "Jogar Dados", pygame.font.Font(None, font_size), green, red, blue)
-botao_mover = classesMonopoly.Button(painel_center - 60, screen_height * 0.45, 120, 50,
+botao_mover = classesMonopoly.Button(painel_center - 60, screen_height/2 + 60, 120, 50,
                                            "Mover", pygame.font.Font(None, font_size), green, red, blue)
-botao_comprar = classesMonopoly.Button(painel_center - 60, screen_height * 0.3, 120, 50,
+botao_comprar = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
                                            "Comprar", pygame.font.Font(None, font_size), green, red, blue)
-botao_melhorar = classesMonopoly.Button(painel_center - 60, screen_height * 0.45, 120, 50,
+botao_melhorar = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
                                            "Melhorar", pygame.font.Font(None, font_size), green, red, blue)
-botao_terminar = classesMonopoly.Button(painel_center - 60, screen_height * 0.6, 120, 50,
+botao_terminar = classesMonopoly.Button(painel_center - 60, screen_height/2 + 120, 120, 50,
                                            "Terminar", pygame.font.Font(None, font_size), green, red, blue)
-botao_pagar = classesMonopoly.Button(painel_center - 60, screen_height * 0.45, 120, 50,
+botao_pagar = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
                                            "Pagar", pygame.font.Font(None, font_size), green, red, blue)
+botao_pegar_carta = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
+                                           "Pegar Carta", pygame.font.Font(None, font_size), green, red, blue)
+botao_ok = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
+                                           "Pegar Carta", pygame.font.Font(None, font_size), green, red, blue)
 
 
 
@@ -157,24 +161,56 @@ def desenhar_painel_jogo():
     #Posição x do painel do lado direito do tabuleiro
     px = pontoInicial + board_size
     jogador = partida.jogador_Atual
-    
+    #Jogar dados
     if estado == 0:
         draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
                           pygame.font.Font(None, font_size), jogador.cor)
         botao_jogar_dados.draw(screen)
+    #Mover o jogador
     elif estado == 1:
         draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
                           pygame.font.Font(None, font_size), jogador.cor)
         botao_mover.draw(screen)
+    #Possibilidade de compra
     elif estado == 2:
         draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
                           pygame.font.Font(None, font_size), jogador.cor)
         botao_comprar.draw(screen)
+    #Possibilidade de aumentar o nivel da propriedade
+    elif estado == 3:
+        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
+                          pygame.font.Font(None, font_size), jogador.cor)
+        botao_melhorar.draw(screen)
+    #E agora ?
+    elif estado == 4:
+        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
+                          pygame.font.Font(None, font_size), jogador.cor)
+        botao_pegar_carta.draw(screen)
+    #Nada a fazer
+    elif estado == 5:
+        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
+                          pygame.font.Font(None, font_size), jogador.cor)
+        botao_ok.draw(screen)
+    #Férias, uma rodada sem jogar
+    elif estado == 6:
+        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
+                          pygame.font.Font(None, font_size), jogador.cor)
+        botao_ok.draw(screen)
+    #Vá para prisão
+    elif estado == 7:
+        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
+                          pygame.font.Font(None, font_size), jogador.cor)
+        botao_ok.draw(screen)
+    #Propriedade de outro jogador
+    elif estado == 8:
+        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
+                          pygame.font.Font(None, font_size), jogador.cor)
+        botao_pagar.draw(screen)
+    #Terminar a vez
     else:
         draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
                           pygame.font.Font(None, font_size), jogador.cor)
         botao_terminar.draw(screen)
-    
 
 def exibir_info_posicao_atual():
     posicao = partida.jogador_Atual.posicao
@@ -251,6 +287,10 @@ def desenhar_dados(resultado):
 while partida.status == "Jogando":
     #Posição do mouse
     pos = pygame.mouse.get_pos()
+    #Jogador atual
+    jogador = partida.jogador_Atual
+    #Propriedade em que o jogador está
+    propriedade = casas[jogador.posicao].propriedade
     # Verificar eventos
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -289,6 +329,34 @@ while partida.status == "Jogando":
         #Possibilidade de compra
         if estado == 2:
             if botao_comprar.handle_event(event):
+                if jogador.comprar_propriedade(propriedade):
+                    print(f"{jogador.nome} comprou {propriedade.titulo}")
+                else:
+                    print(f"Você não tem dinheiro suficiente")
+                estado = 9
+        #Possibilidade de aumentar o nivel da propriedade
+        if estado == 3:
+            if botao_melhorar.handle_event(event):
+                estado = 9
+        #E agora ?
+        if estado == 4:
+            if botao_pegar_carta.handle_event(event):
+                estado = 9
+        #Nada a fazer
+        if estado == 5:
+            if botao_ok.handle_event(event):
+                estado = 9
+        #Férias, uma rodada sem jogar
+        if estado == 6:
+            if botao_ok.handle_event(event):
+                estado = 9
+        #Vá para prisão
+        if estado == 7:
+            if botao_ok.handle_event(event):
+                estado = 9
+        #Propriedade de outro jogador
+        if estado == 8:
+            if botao_pagar.handle_event(event):
                 estado = 9
         #Terminar a vez
         if estado == 9:
