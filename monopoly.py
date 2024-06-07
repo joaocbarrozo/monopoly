@@ -47,50 +47,44 @@ jogadores = [jogador1, jogador2, jogador3, jogador4]
 
 
 #Criar propriedades e outras casas do tabuleiro
-propriedades = [classesMonopoly.Propriedade(yellow, black, "Inicio", "0", 1, "Banco", 150, [150, 200, 250, 300, 350], 
-                                            "Inicio do jogo"),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "1", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "2", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "3", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(gray, black, "E Agora?", "4", 1, "Banco", 0, [150, 200, 250, 300, 350],
-                                             "Tire uma carta será que hoje é seu dia de sorte?"),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "5", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "6", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "7", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "8", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Prisão", "9", 1, None, 0, [150, 200, 250, 300, 350], 
-                                            "Você está apenas fazendo uma visita."),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "10", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "11", 1,None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "12", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(gray, black, "E Agora?", "13", 1, "Banco", 0, [150, 200, 250, 300, 350],
-                                            "Tire uma carta será que hoje é seu dia de sorte?"),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "14", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "15", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "16", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "17", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Férias", "18", 1, None, 0, [150, 200, 250, 300, 350], 
-                                            "VocÊ está de ferias, fique uma vez sem jogar"),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "19", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "20", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "21", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(gray, black, "E Agora?", "22", 1, "Banco", 0, [150, 200, 250, 300, 350],
-                                            "Tire uma carta será que hoje é seu dia de sorte?"),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "23", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "24", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "25", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "26", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Vá p/ Prisão", "27", 1, "Banco", 0, [150, 200, 250, 300, 350], 
-                                            "Vá para a prisão!"),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "28", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "29", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "30", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(gray, black, "E Agora?", "31", 1, "Banco", 0, [150, 200, 250, 300, 350],
-                                            "Tire uma carta será que hoje é seu dia de sorte?"),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "32", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "33", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "34", 1, None, 0, [150, 200, 250, 300, 350]),
-                classesMonopoly.Propriedade(yellow, black, "Inicio", "35", 1, None, 0, [150, 200, 250, 300, 350])]
+propriedades = [
+    classesMonopoly.Propriedade(yellow, black, "Banco", "0", 1, "Banco", 150, [150, 200, 250, 300, 350], "Inicio do jogo"),
+    classesMonopoly.Propriedade(yellow, black, "Farmácia", "1", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Restaurante", "2", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Supermercado", "3", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(gray, black, "E Agora?", "4", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
+    classesMonopoly.Propriedade(yellow, black, "P. Gasolina", "5", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Padaria", "6", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Livraria", "7", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "L. de Roupas", "8", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Prisão", "9", 1, None, 0, [150, 200, 250, 300, 350], "Você está apenas fazendo uma visita."),
+    classesMonopoly.Propriedade(yellow, black, "Barbearia", "10", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Academia", "11", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Sorveteria", "12", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(gray, black, "E Agora?", "13", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
+    classesMonopoly.Propriedade(yellow, black, "Café", "14", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Cinema", "15", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Teatro", "16", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Floricultura", "17", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Férias", "18", 1, None, 0, [150, 200, 250, 300, 350], "VocÊ está de ferias, fique uma vez sem jogar"),
+    classesMonopoly.Propriedade(yellow, black, "Lanchonete", "19", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Papelaria", "20", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Clínica Médica", "21", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(gray, black, "E Agora?", "22", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
+    classesMonopoly.Propriedade(yellow, black, "Pet Shop", "23", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Eletrônicos", "24", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Imobiliária", "25", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Lava Jato", "26", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Vá p/ Prisão", "27", 1, "Banco", 0, [150, 200, 250, 300, 350], "Vá para a prisão!"),
+    classesMonopoly.Propriedade(yellow, black, "Mercado", "28", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Hamburgueria", "29", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Estacionamento", "30", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(gray, black, "E Agora?", "31", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
+    classesMonopoly.Propriedade(yellow, black, "Escola", "32", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Biblioteca", "33", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Estádio", "34", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "C. Convenções", "35", 1, None, 0, [150, 200, 250, 300, 350])
+]
 
 #Instanciar cada casa do tabuleiro
 casas = []
@@ -109,11 +103,20 @@ for i in range(28,36):
 partida = classesMonopoly.Partida(jogadores)
 resultado = [1, 6]
 estado = 0
+rodada = 1
 
 botao_jogar_dados = classesMonopoly.Button(painel_center - 60, screen_height * 0.3, 120, 50,
                                            "Jogar Dados", pygame.font.Font(None, font_size), green, red, blue)
 botao_mover = classesMonopoly.Button(painel_center - 60, screen_height * 0.45, 120, 50,
                                            "Mover", pygame.font.Font(None, font_size), green, red, blue)
+botao_comprar = classesMonopoly.Button(painel_center - 60, screen_height * 0.3, 120, 50,
+                                           "Comprar", pygame.font.Font(None, font_size), green, red, blue)
+botao_melhorar = classesMonopoly.Button(painel_center - 60, screen_height * 0.45, 120, 50,
+                                           "Melhorar", pygame.font.Font(None, font_size), green, red, blue)
+botao_terminar = classesMonopoly.Button(painel_center - 60, screen_height * 0.6, 120, 50,
+                                           "Terminar", pygame.font.Font(None, font_size), green, red, blue)
+botao_pagar = classesMonopoly.Button(painel_center - 60, screen_height * 0.45, 120, 50,
+                                           "Pagar", pygame.font.Font(None, font_size), green, red, blue)
 
 
 
@@ -137,7 +140,7 @@ def desenhar_casas_tabuleiro():
         else:    
             pygame.draw.rect(screen, casa.propriedade.cor, (casa.posicao_x + 2, casa.posicao_y + 2, casa.width - 4, casa.height / 3))
         # Desenha o titulo dentro do retângulo superior
-        draw_text_in_rect(casa.propriedade.titulo, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height / 3), pygame.font.Font(None, font_size), black)
+        draw_text_in_rect(casa.propriedade.titulo, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height / 3), pygame.font.Font(None, int(font_size * 0.7)), black)
         draw_text_in_rect(casa.propriedade.texto, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height), pygame.font.Font(None, font_size), black)
 
 def desenhar_estatisticas_jogadores():
@@ -163,6 +166,15 @@ def desenhar_painel_jogo():
         draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
                           pygame.font.Font(None, font_size), jogador.cor)
         botao_mover.draw(screen)
+    elif estado == 2:
+        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
+                          pygame.font.Font(None, font_size), jogador.cor)
+        botao_comprar.draw(screen)
+    else:
+        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
+                          pygame.font.Font(None, font_size), jogador.cor)
+        botao_terminar.draw(screen)
+    
 
 def exibir_info_posicao_atual():
     posicao = partida.jogador_Atual.posicao
@@ -191,8 +203,6 @@ def desenhar_pinos():
 def jogar_dados():
     dado1 = random.randint(0,6000) % 6 + 1
     dado2 = random.randint(0,6000) % 6 + 1
-    print(partida.jogador_Atual.posicao)
-    print()
     dados = [dado1, dado2]
     return dados
 
@@ -255,6 +265,39 @@ while partida.status == "Jogando":
             if botao_mover.handle_event(event):
                 partida.jogador_Atual.mover(resultado[0] + resultado[1])
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                #Possibilidade de compra
+                if casas[partida.jogador_Atual.posicao].propriedade.proprietario == None:
+                    estado = 2
+                #Possibilidade de aumentar o nivel da propriedade
+                elif casas[partida.jogador_Atual.posicao].propriedade.proprietario == partida.jogador_Atual:
+                    estado = 3 
+                #E agora ?
+                elif partida.jogador_Atual.posicao % 9 == 4:
+                    estado = 4
+                #Nada a fazer
+                elif partida.jogador_Atual.posicao == 0 or partida.jogador_Atual.posicao == 9:
+                    estado = 5
+                #Férias, uma rodada sem jogar
+                elif partida.jogador_Atual.posicao == 18:
+                    estado = 6
+                #Vá para prisão
+                elif partida.jogador_Atual.posicao == 27:
+                    estado = 7
+                #Propriedade de outro jogador
+                else:
+                    estado = 8
+        #Possibilidade de compra
+        if estado == 2:
+            if botao_comprar.handle_event(event):
+                estado = 9
+        #Terminar a vez
+        if estado == 9:
+            if botao_terminar.handle_event(event):
+                partida.jogada +=1
+                rodada = partida.jogada // 4
+                print(f"Jogada: {partida.jogada} Rodada: {rodada}")
+                partida.jogador_Atual = partida.jogadores[partida.jogada % 4]
+                estado = 0
             
     # Preencher a tela com a cor branca
     screen.fill(white)

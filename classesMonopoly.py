@@ -45,7 +45,7 @@ class Propriedade:
         self.titulo = titulo
         self.texto = texto
         self.nivel = nivel
-        self.prorpietario = proprietario# Definir banco para as posições especiais do tabuleiro como inicio, prisão sorte e revez e etc
+        self.proprietario = proprietario# Definir banco para as posições especiais do tabuleiro como inicio, prisão sorte e revez e etc
         self.valor_compra = valor_compra
         self.valor_aluguel = array_aluguel # Array com o valor do aluguel para cada nivel 5 posições
         self.info = info
