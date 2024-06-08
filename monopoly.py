@@ -49,41 +49,41 @@ jogadores = [jogador1, jogador2, jogador3, jogador4]
 #Criar propriedades e outras casas do tabuleiro
 propriedades = [
     classesMonopoly.Propriedade(yellow, black, "Banco", "0", 1, "Banco", 150, [150, 200, 250, 300, 350], "Inicio do jogo"),
-    classesMonopoly.Propriedade(yellow, black, "Farmácia", "1", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Restaurante", "2", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Supermercado", "3", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Farmácia", "1", 1, None, 200, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Restaurante", "2", 1, None, 300, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Supermercado", "3", 1, None, 200, [150, 200, 250, 300, 350]),
     classesMonopoly.Propriedade(gray, black, "E Agora?", "4", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
-    classesMonopoly.Propriedade(yellow, black, "P. Gasolina", "5", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Padaria", "6", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Livraria", "7", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "L. de Roupas", "8", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Prisão", "9", 1, None, 0, [150, 200, 250, 300, 350], "Você está apenas fazendo uma visita."),
-    classesMonopoly.Propriedade(yellow, black, "Barbearia", "10", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Academia", "11", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Sorveteria", "12", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "P. Gasolina", "5", 1, None, 350, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Padaria", "6", 1, None, 250, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Livraria", "7", 1, None, 100, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "L. de Roupas", "8", 1, None, 150, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Prisão", "9", 1, "Banco", 0, [150, 200, 250, 300, 350], "Você está apenas fazendo uma visita."),
+    classesMonopoly.Propriedade(yellow, black, "Barbearia", "10", 1, None, 150, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Academia", "11", 1, None, 200, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Sorveteria", "12", 1, None, 100, [150, 200, 250, 300, 350]),
     classesMonopoly.Propriedade(gray, black, "E Agora?", "13", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
-    classesMonopoly.Propriedade(yellow, black, "Café", "14", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Cinema", "15", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Teatro", "16", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Floricultura", "17", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Férias", "18", 1, None, 0, [150, 200, 250, 300, 350], "VocÊ está de ferias, fique uma vez sem jogar"),
-    classesMonopoly.Propriedade(yellow, black, "Lanchonete", "19", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Papelaria", "20", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Clínica Médica", "21", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Café", "14", 1, None, 150, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Cinema", "15", 1, None, 200, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Teatro", "16", 1, None, 150, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Floricultura", "17", 1, None, 100, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Férias", "18", 1, "Banco", 0, [150, 200, 250, 300, 350], "VocÊ está de ferias, fique uma vez sem jogar"),
+    classesMonopoly.Propriedade(yellow, black, "Lanchonete", "19", 1, None, 150, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Papelaria", "20", 1, None, 100, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Clínica Médica", "21", 1, None, 300, [150, 200, 250, 300, 350]),
     classesMonopoly.Propriedade(gray, black, "E Agora?", "22", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
-    classesMonopoly.Propriedade(yellow, black, "Pet Shop", "23", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Eletrônicos", "24", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Imobiliária", "25", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Lava Jato", "26", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Pet Shop", "23", 1, None, 200, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Eletrônicos", "24", 1, None, 200, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Imobiliária", "25", 1, None, 150, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Lava Jato", "26", 1, None, 100, [150, 200, 250, 300, 350]),
     classesMonopoly.Propriedade(yellow, black, "Vá p/ Prisão", "27", 1, "Banco", 0, [150, 200, 250, 300, 350], "Vá para a prisão!"),
-    classesMonopoly.Propriedade(yellow, black, "Mercado", "28", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Hamburgueria", "29", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Estacionamento", "30", 1, None, 0, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Mercado", "28", 1, None, 300, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Hamburgueria", "29", 1, None, 250, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Estacionamento", "30", 1, None, 200, [150, 200, 250, 300, 350]),
     classesMonopoly.Propriedade(gray, black, "E Agora?", "31", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
-    classesMonopoly.Propriedade(yellow, black, "Escola", "32", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Biblioteca", "33", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Estádio", "34", 1, None, 0, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "C. Convenções", "35", 1, None, 0, [150, 200, 250, 300, 350])
+    classesMonopoly.Propriedade(yellow, black, "Escola", "32", 1, None, 300, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Biblioteca", "33", 1, None, 150, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "Estádio", "34", 1, None, 400, [150, 200, 250, 300, 350]),
+    classesMonopoly.Propriedade(yellow, black, "C. Convenções", "35", 1, None, 350, [150, 200, 250, 300, 350])
 ]
 
 #Instanciar cada casa do tabuleiro
@@ -120,7 +120,7 @@ botao_pagar = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 5
 botao_pegar_carta = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
                                            "Pegar Carta", pygame.font.Font(None, font_size), green, red, blue)
 botao_ok = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
-                                           "Pegar Carta", pygame.font.Font(None, font_size), green, red, blue)
+                                           "Ok", pygame.font.Font(None, font_size), green, red, blue)
 
 
 
@@ -176,11 +176,13 @@ def desenhar_painel_jogo():
         draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
                           pygame.font.Font(None, font_size), jogador.cor)
         botao_comprar.draw(screen)
+        botao_terminar.draw(screen)
     #Possibilidade de aumentar o nivel da propriedade
     elif estado == 3:
         draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
                           pygame.font.Font(None, font_size), jogador.cor)
         botao_melhorar.draw(screen)
+        botao_terminar.draw(screen)
     #E agora ?
     elif estado == 4:
         draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
@@ -287,41 +289,74 @@ def desenhar_dados(resultado):
 while partida.status == "Jogando":
     #Posição do mouse
     pos = pygame.mouse.get_pos()
-    #Jogador atual
-    jogador = partida.jogador_Atual
-    #Propriedade em que o jogador está
-    propriedade = casas[jogador.posicao].propriedade
     # Verificar eventos
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit() 
         if estado == 0:
+            #Jogador atual
+            jogador = partida.jogador_Atual
+            #Posição anterior
+            pos_inicial = jogador.posicao
+            #Caso o jogador tenha caido nas ferias na rodada anterior fica uma vez sem jogar
+            if partida.jogador_Atual.ferias > 0:
+                print("Voce está de ferias e não jogara nessa rodada")
+                partida.jogador_Atual.ferias -= 1
+                estado = 9
             if botao_jogar_dados.handle_event(event):
                 resultado = jogar_dados()
+                #Se o jogador está na prisão verificar se tirou numeros iguais no dado para sair
+                if jogador.posicao == 9 and jogador.prisao > 0:
+                    if jogador.prisao < 4:
+                        if resultado[0] == resultado[1]:
+                            jogador.prisao = 0
+                            estado = 1
+                        else:
+                            print(f"Voce não conseguiu sair!")
+                            print(f"Essa foi sua tentativa número {jogador.prisao}")
+                            jogador.prisao +=1
+                            estado = 9
+                    else:
+                        print("Voce pagou R$ 200,00 pra poder sair!")
+                        if jogador.remover_dinheiro(200):
+                            estado = 1
+                        else:
+                            jogador.prisao -= 1
                 estado = 1
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         if estado == 1:
             if botao_mover.handle_event(event):
-                partida.jogador_Atual.mover(resultado[0] + resultado[1])
+                jogador.mover(resultado[0] + resultado[1])
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                pos_atual = jogador.posicao
+                #Propriedade em que o jogador está
+                propriedade = casas[jogador.posicao].propriedade
+                print(f"Proprietario: {propriedade.proprietario}")
+                #Verificar se o jogador passou pelo inicio
+                if pos_atual < pos_inicial:
+                    print("Voce passou pelo inicio e recebeu R$ 200,00")
+                    jogador.adicionar_dinheiro(200)
                 #Possibilidade de compra
-                if casas[partida.jogador_Atual.posicao].propriedade.proprietario == None:
+                if propriedade.proprietario == None:
                     estado = 2
                 #Possibilidade de aumentar o nivel da propriedade
-                elif casas[partida.jogador_Atual.posicao].propriedade.proprietario == partida.jogador_Atual:
+                elif propriedade.proprietario == jogador:
                     estado = 3 
                 #E agora ?
-                elif partida.jogador_Atual.posicao % 9 == 4:
+                elif jogador.posicao % 9 == 4:
                     estado = 4
                 #Nada a fazer
-                elif partida.jogador_Atual.posicao == 0 or partida.jogador_Atual.posicao == 9:
+                elif jogador.posicao == 0 or jogador.posicao == 9:
                     estado = 5
                 #Férias, uma rodada sem jogar
-                elif partida.jogador_Atual.posicao == 18:
+                elif jogador.posicao == 18:
+                    print("Voce está de férias e ficará uma vez sem jogar!")
+                    jogador.ferias = 1
                     estado = 6
                 #Vá para prisão
-                elif partida.jogador_Atual.posicao == 27:
+                elif jogador.posicao == 27:
+                    print("Vá para a prisão sem receber nada!")
                     estado = 7
                 #Propriedade de outro jogador
                 else:
@@ -334,13 +369,30 @@ while partida.status == "Jogando":
                 else:
                     print(f"Você não tem dinheiro suficiente")
                 estado = 9
+            if botao_terminar.handle_event(event):
+                partida.jogada +=1
+                rodada = partida.jogada // 4
+                print(f"Jogada: {partida.jogada} Rodada: {rodada}")
+                partida.jogador_Atual = partida.jogadores[partida.jogada % 4]
+                estado = 0
         #Possibilidade de aumentar o nivel da propriedade
         if estado == 3:
             if botao_melhorar.handle_event(event):
+                if propriedade.melhorar_propriedade():
+                    print(f"{propriedade.titulo} melhorada para o nivel {propriedade.nivel}")
+                else:
+                    print(f"Você não tem dinheiro suficiente")
                 estado = 9
+            if botao_terminar.handle_event(event):
+                partida.jogada +=1
+                rodada = partida.jogada // 4
+                print(f"Jogada: {partida.jogada} Rodada: {rodada}")
+                partida.jogador_Atual = partida.jogadores[partida.jogada % 4]
+                estado = 0
         #E agora ?
         if estado == 4:
             if botao_pegar_carta.handle_event(event):
+                propriedade.sorteio_eAgora(jogador)
                 estado = 9
         #Nada a fazer
         if estado == 5:
@@ -353,11 +405,18 @@ while partida.status == "Jogando":
         #Vá para prisão
         if estado == 7:
             if botao_ok.handle_event(event):
+                jogador.prisao = 1
+                jogador.posicao = 9
                 estado = 9
         #Propriedade de outro jogador
         if estado == 8:
             if botao_pagar.handle_event(event):
-                estado = 9
+                if jogador.pagar_aluguel(propriedade.proprietario, propriedade.valor_aluguel[propriedade.nivel - 1]):
+                    print(f"Você pagou R$ {propriedade.valor_aluguel[propriedade.nivel - 1]},00 para {propriedade.proprietario.nome}")
+                    estado = 9
+                else:
+                    print("Voce não tem dinheiro suficiente")
+                    estado = 9
         #Terminar a vez
         if estado == 9:
             if botao_terminar.handle_event(event):

@@ -1,5 +1,5 @@
 import pygame
-import time
+import random
 
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -11,6 +11,8 @@ class Jogador:
         self.dinheiro = saldoInicial  # Dinheiro inicial do jogador
         self.propriedades = []  # Lista para armazenar as propriedades do jogador
         self.cor = cor
+        self.ferias = 0
+        self.prisao = 0
 
     def mover(self, casas):
         self.posicao = (self.posicao + casas) % 36  # Há 36 casas no tabuleiro do Monopoly
@@ -20,9 +22,14 @@ class Jogador:
 
     def remover_dinheiro(self, quantidade):
         self.dinheiro -= quantidade
+    
+    def saldo_suficiente(self, valor):
+        if self.dinheiro >= valor:
+            return True
+        return False
 
     def comprar_propriedade(self, propriedade):
-        if self.dinheiro >= propriedade.valor_compra:
+        if self.saldo_suficiente(propriedade.valor_compra):
             self.propriedades.append(propriedade)
             self.remover_dinheiro(propriedade.valor_compra)
             propriedade.borda_cor = self.cor
@@ -31,14 +38,16 @@ class Jogador:
         return False
 
     def pagar_aluguel(self, proprietario, aluguel):
-        if self.dinheiro >= aluguel:
+        if self.saldo_suficiente(aluguel):
             self.remover_dinheiro(aluguel)
             proprietario.adicionar_dinheiro(aluguel)
+            return True
         else:
             # Se o jogador não tiver dinheiro suficiente para pagar o aluguel, ele está falido
             # e deve sair do jogo
             print(f"{self.nome} faliu!")
             # Aqui você pode adicionar a lógica para remover o jogador do jogo
+            return False
 
     def __str__(self):
         return f"Nome: {self.nome}, Posição: {self.posicao}, Dinheiro: {self.dinheiro}, Propriedades: {self.propriedades}"
@@ -54,7 +63,27 @@ class Propriedade:
         self.valor_compra = valor_compra
         self.valor_aluguel = array_aluguel # Array com o valor do aluguel para cada nivel 5 posições
         self.info = info
-
+        
+    def melhorar_propriedade(self):
+        if self.proprietario.saldo_suficiente(self.valor_compra):
+            self.proprietario.remover_dinheiro(self.valor_compra)
+            self.nivel =+ 1
+            return True
+        return False
+    def sorteio_eAgora(self, jogador):
+        sorte = random.randint(0, 1000)
+        revez = random.randint(0, 1000)
+        print(f"Sorte: {sorte}, Revez: {revez}")
+        if sorte > revez:
+            premio = (sorte - revez)// 10 * 10
+            print(f"Premio: {premio}")
+            jogador.adicionar_dinheiro(premio)
+        elif revez > sorte:
+            multa = (revez - sorte) // 10 * 10
+            print(f"Multa: {multa}")
+            jogador.remover_dinheiro(multa)
+        else:
+            print("Voce não ganhou nem perdeu nada")
 
 class CasaTabuleiro:
     def __init__(self, numero, posicao_x, posicao_y, width, height, propriedade):
