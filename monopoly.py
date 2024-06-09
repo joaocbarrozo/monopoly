@@ -3,6 +3,7 @@ import sys
 import classesMonopoly
 import random
 import time
+import tabuleiroMonopoly
 
 # Inicializar o Pygame
 pygame.init()
@@ -45,61 +46,12 @@ jogador3 = classesMonopoly.Jogador("Galinari", 1500, blue)
 jogador4 = classesMonopoly.Jogador("Tata", 1500, purple)
 jogadores = [jogador1, jogador2, jogador3, jogador4]
 
-
-#Criar propriedades e outras casas do tabuleiro
-propriedades = [
-    classesMonopoly.Propriedade(yellow, black, "Banco", "0", 1, "Banco", 150, [150, 200, 250, 300, 350], "Inicio do jogo"),
-    classesMonopoly.Propriedade(yellow, black, "Farmácia", "1", 1, None, 200, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Restaurante", "2", 1, None, 300, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Supermercado", "3", 1, None, 200, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(gray, black, "E Agora?", "4", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
-    classesMonopoly.Propriedade(yellow, black, "P. Gasolina", "5", 1, None, 350, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Padaria", "6", 1, None, 250, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Livraria", "7", 1, None, 100, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "L. de Roupas", "8", 1, None, 150, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Prisão", "9", 1, "Banco", 0, [150, 200, 250, 300, 350], "Você está apenas fazendo uma visita."),
-    classesMonopoly.Propriedade(yellow, black, "Barbearia", "10", 1, None, 150, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Academia", "11", 1, None, 200, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Sorveteria", "12", 1, None, 100, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(gray, black, "E Agora?", "13", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
-    classesMonopoly.Propriedade(yellow, black, "Café", "14", 1, None, 150, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Cinema", "15", 1, None, 200, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Teatro", "16", 1, None, 150, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Floricultura", "17", 1, None, 100, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Férias", "18", 1, "Banco", 0, [150, 200, 250, 300, 350], "VocÊ está de ferias, fique uma vez sem jogar"),
-    classesMonopoly.Propriedade(yellow, black, "Lanchonete", "19", 1, None, 150, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Papelaria", "20", 1, None, 100, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Clínica Médica", "21", 1, None, 300, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(gray, black, "E Agora?", "22", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
-    classesMonopoly.Propriedade(yellow, black, "Pet Shop", "23", 1, None, 200, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Eletrônicos", "24", 1, None, 200, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Imobiliária", "25", 1, None, 150, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Lava Jato", "26", 1, None, 100, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Vá p/ Prisão", "27", 1, "Banco", 0, [150, 200, 250, 300, 350], "Vá para a prisão!"),
-    classesMonopoly.Propriedade(yellow, black, "Mercado", "28", 1, None, 300, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Hamburgueria", "29", 1, None, 250, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Estacionamento", "30", 1, None, 200, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(gray, black, "E Agora?", "31", 1, "Banco", 0, [150, 200, 250, 300, 350], "Tire uma carta será que hoje é seu dia de sorte?"),
-    classesMonopoly.Propriedade(yellow, black, "Escola", "32", 1, None, 300, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Biblioteca", "33", 1, None, 150, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "Estádio", "34", 1, None, 400, [150, 200, 250, 300, 350]),
-    classesMonopoly.Propriedade(yellow, black, "C. Convenções", "35", 1, None, 350, [150, 200, 250, 300, 350])
-]
-
 #Instanciar cada casa do tabuleiro
-casas = []
-for i in range(0,10):
-    casas.append(classesMonopoly.CasaTabuleiro(i, pontoInicial + i*square_size, 0, square_size, square_size, propriedades[i]))
-    
-for i in range(10,19):
-    casas.append(classesMonopoly.CasaTabuleiro(i, pontoInicial + square_size*9, (i-9)*square_size, square_size, square_size, propriedades[i]))
+casas = tabuleiroMonopoly.casas
 
-for i in range(19,28):
-    casas.append(classesMonopoly.CasaTabuleiro(i, pontoInicial + square_size*9 - (i-18)*square_size, square_size*9, square_size, square_size, propriedades[i]))
+imagens = tabuleiroMonopoly.carregar_imagens()
 
-for i in range(28,36):
-    casas.append(classesMonopoly.CasaTabuleiro(i, pontoInicial, 9*square_size - (i-27)*square_size, square_size, square_size, propriedades[i]))
-
+#Variaveis globais
 partida = classesMonopoly.Partida(jogadores)
 resultado = [1, 6]
 estado = 0
@@ -122,6 +74,7 @@ botao_pegar_carta = classesMonopoly.Button(painel_center - 60, screen_height/2, 
 botao_ok = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
                                            "Ok", pygame.font.Font(None, font_size), green, red, blue)
 
+#textBox_info = classesMonopoly.TextBox(pontoInicial + board_size + 5, )
 
 
 # Função para renderizar o texto em uma superfície separada
@@ -138,14 +91,16 @@ def draw_text_in_rect(text, rect, font, color):
 # Função para desenhar casa a casa do tabuleiro
 def desenhar_casas_tabuleiro():
     for casa in casas:
-        pygame.draw.rect(screen, casa.propriedade.borda_cor, (casa.posicao_x, casa.posicao_y, casa.width, casa.height), 2)
+        pygame.draw.rect(screen, casa.propriedade.borda_cor, (casa.posicao_x, casa.posicao_y, casa.width, casa.height), 4)
         if (casa.numero % 9 == 0 or casa.numero % 9 == 4 ):
-            pygame.draw.rect(screen, casa.propriedade.cor, (casa.posicao_x + 2, casa.posicao_y + 2, casa.width - 4, casa.height - 4))
+            pygame.draw.rect(screen, casa.propriedade.cor, (casa.posicao_x + 4, casa.posicao_y + 4, casa.width - 8, casa.height - 8))
         else:    
-            pygame.draw.rect(screen, casa.propriedade.cor, (casa.posicao_x + 2, casa.posicao_y + 2, casa.width - 4, casa.height / 3))
+            pygame.draw.rect(screen, casa.propriedade.cor, (casa.posicao_x + 4, casa.posicao_y + 4, casa.width - 8, casa.height / 3))
         # Desenha o titulo dentro do retângulo superior
         draw_text_in_rect(casa.propriedade.titulo, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height / 3), pygame.font.Font(None, int(font_size * 0.7)), black)
         draw_text_in_rect(casa.propriedade.texto, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height), pygame.font.Font(None, font_size), black)
+        for imagem in imagens:
+            screen.blit(imagem[0], imagem[1])
 
 def desenhar_estatisticas_jogadores():
     for i in range(0,len(jogadores)):
@@ -158,65 +113,47 @@ def desenhar_estatisticas_jogadores():
                           pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
 
 def desenhar_painel_jogo():
-    #Posição x do painel do lado direito do tabuleiro
-    px = pontoInicial + board_size
-    jogador = partida.jogador_Atual
     #Jogar dados
     if estado == 0:
-        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
-                          pygame.font.Font(None, font_size), jogador.cor)
         botao_jogar_dados.draw(screen)
     #Mover o jogador
     elif estado == 1:
-        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
-                          pygame.font.Font(None, font_size), jogador.cor)
         botao_mover.draw(screen)
     #Possibilidade de compra
     elif estado == 2:
-        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
-                          pygame.font.Font(None, font_size), jogador.cor)
         botao_comprar.draw(screen)
         botao_terminar.draw(screen)
     #Possibilidade de aumentar o nivel da propriedade
     elif estado == 3:
-        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
-                          pygame.font.Font(None, font_size), jogador.cor)
         botao_melhorar.draw(screen)
         botao_terminar.draw(screen)
     #E agora ?
     elif estado == 4:
-        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
-                          pygame.font.Font(None, font_size), jogador.cor)
         botao_pegar_carta.draw(screen)
     #Nada a fazer
     elif estado == 5:
-        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
-                          pygame.font.Font(None, font_size), jogador.cor)
         botao_ok.draw(screen)
     #Férias, uma rodada sem jogar
     elif estado == 6:
-        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
-                          pygame.font.Font(None, font_size), jogador.cor)
         botao_ok.draw(screen)
     #Vá para prisão
     elif estado == 7:
-        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
-                          pygame.font.Font(None, font_size), jogador.cor)
         botao_ok.draw(screen)
     #Propriedade de outro jogador
     elif estado == 8:
-        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
-                          pygame.font.Font(None, font_size), jogador.cor)
         botao_pagar.draw(screen)
     #Terminar a vez
-    else:
-        draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.1), 
-                          pygame.font.Font(None, font_size), jogador.cor)
+    else:  
         botao_terminar.draw(screen)
 
 def exibir_info_posicao_atual():
+    #Posição x do painel do lado direito do tabuleiro
+    px = pontoInicial + board_size
+    jogador = partida.jogador_Atual
     posicao = partida.jogador_Atual.posicao
     propriedade = casas[posicao].propriedade
+    draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.05), 
+                          pygame.font.Font(None, font_size), jogador.cor)
     if casas[posicao].propriedade.info != None:
         draw_text_in_rect(propriedade.info, pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.5, 
                                                                        screen_width - pontoInicial - board_size - 10, screen_height * 0.5), 
