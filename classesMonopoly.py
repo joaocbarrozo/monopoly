@@ -13,15 +13,18 @@ class Jogador:
         self.cor = cor
         self.ferias = 0
         self.prisao = 0
+        self.patrimonio = saldoInicial
 
     def mover(self, casas):
         self.posicao = (self.posicao + casas) % 36  # Há 36 casas no tabuleiro do Monopoly
 
     def adicionar_dinheiro(self, quantidade):
         self.dinheiro += quantidade
-
+        self.patrimonio += quantidade
+    
     def remover_dinheiro(self, quantidade):
         self.dinheiro -= quantidade
+        self.patrimonio -= quantidade
     
     def saldo_suficiente(self, valor):
         if self.dinheiro >= valor:
@@ -32,6 +35,7 @@ class Jogador:
         if self.saldo_suficiente(propriedade.valor_compra):
             self.propriedades.append(propriedade)
             self.remover_dinheiro(propriedade.valor_compra)
+            self.patrimonio += propriedade.valor_compra
             propriedade.borda_cor = self.cor
             propriedade.proprietario = self
             return True
@@ -67,9 +71,11 @@ class Propriedade:
     def melhorar_propriedade(self):
         if self.proprietario.saldo_suficiente(self.valor_compra):
             self.proprietario.remover_dinheiro(self.valor_compra)
-            self.nivel =+ 1
+            self.proprietario.patrimonio += self.valor_compra
+            self.nivel += 1
             return True
         return False
+    
     def sorteio_eAgora(self, jogador):
         sorte = random.randint(0, 1000)
         revez = random.randint(0, 1000)

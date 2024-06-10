@@ -117,7 +117,9 @@ def desenhar_estatisticas_jogadores():
                           pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
         draw_text_in_rect("Quantidade Propriedades: " + str(len(jogadores[i].propriedades)), pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.5), 
                           pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
-
+        draw_text_in_rect("Patrimonio: R$ " + str(jogadores[i].patrimonio) + ",00", pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.7), 
+                          pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
+        
 #Desenha os botoes de acordo com o estado do jogo
 def desenhar_painel_jogo():
     #Jogar dados
@@ -168,9 +170,9 @@ def exibir_info_posicao_atual():
     #Coloca a imagem da casa atual abaixo do nome
     screen.blit(pygame.transform.scale(imagens[posicao][0], (painel_size / 2, painel_size / 2)), (painel_x + painel_size / 4, screen_height * 0.1))
     if casas[posicao].propriedade.info != None:
-        draw_text_in_rect(propriedade.info, pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.4, 
+        '''draw_text_in_rect(propriedade.info, pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.4, 
                                                                        screen_width - pontoInicial - board_size - 10, screen_height * 0.5), 
-                                                                        pygame.font.Font(None, font_size), black) 
+                                                                        pygame.font.Font(None, font_size), black)'''
     else:
         draw_text_in_rect(f"Valor Compra: R$ {propriedade.valor_compra},00", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.4, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
@@ -178,17 +180,20 @@ def exibir_info_posicao_atual():
         draw_text_in_rect(f"Proprietario: {propriedade.proprietario}", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.425, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
-        draw_text_in_rect(f"Aluguel Nivel 1: R$ {propriedade.valor_aluguel[0]},00", 
+        draw_text_in_rect(f"Nivel Atual: {propriedade.nivel}", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.45, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
-        draw_text_in_rect(f"Aluguel Nivel 2: R$ {propriedade.valor_aluguel[1]},00", 
+        draw_text_in_rect(f"Aluguel Nivel 1: R$ {propriedade.valor_aluguel[0]},00", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.475, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
-        draw_text_in_rect(f"Aluguel Nivel 3: R$ {propriedade.valor_aluguel[2]},00", 
+        draw_text_in_rect(f"Aluguel Nivel 2: R$ {propriedade.valor_aluguel[1]},00", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.5, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
-        draw_text_in_rect(f"Aluguel Nivel 4: R$ {propriedade.valor_aluguel[3]},00", 
+        draw_text_in_rect(f"Aluguel Nivel 3: R$ {propriedade.valor_aluguel[2]},00", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.525, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
+                        pygame.font.Font(None, font_size), black)
+        draw_text_in_rect(f"Aluguel Nivel 4: R$ {propriedade.valor_aluguel[3]},00", 
+                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.55, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
         draw_text_in_rect(f"Aluguel Nivel 5: R$ {propriedade.valor_aluguel[4]},00", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.55, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
@@ -205,6 +210,18 @@ def exibir_mensagem(mensagem):
                           pygame.Rect(pontoInicial + square_size * 3, square_size * 2 - 16, square_size * 4, square_size * 0.2), 
                         pygame.font.Font(None, font_size), white)
     text  = classesMonopoly.TextBox(pontoInicial + square_size * 3 + 4, square_size * 2 + 4, square_size * 4, square_size * 2, font_size, mensagem, black)
+    text.draw(screen)
+    
+def exibir_informações():
+    #Desenhar retangulo preenchido do titulo da caixa de texto
+    pygame.draw.rect(screen, dark_gray, (pontoInicial + square_size * 3, square_size * 6 - 20, square_size * 4, square_size * 0.25))
+    #Desenhar borda da caixa de texto
+    pygame.draw.rect(screen, dark_gray, (pontoInicial + square_size * 3, square_size * 6, square_size * 4, square_size * 2), 2)
+    #Escrever no retangulo preenchido do titulo
+    draw_text_in_rect(f"Informações da partida", 
+                          pygame.Rect(pontoInicial + square_size * 3, square_size * 6 - 16, square_size * 4, square_size * 0.2), 
+                        pygame.font.Font(None, font_size), white)
+    text  = classesMonopoly.TextBox(pontoInicial + square_size * 3 + 4, square_size * 6 + 4, square_size * 4, square_size * 2, font_size, "Informaçoes da partida", black)
     text.draw(screen)
 
 def desenhar_pinos():
@@ -257,9 +274,9 @@ def desenhar_numeros_dado(pos_x, pos_y, dado_size, valor):
     
 def desenhar_dados(resultado):
     dado_size = square_size * 0.6
-    dado1_px = board_center - dado_size
+    dado1_px = board_center - dado_size - square_size*0.4
     dado1_py = screen_height /2 - dado_size
-    dado2_px = board_center + dado_size
+    dado2_px = board_center + dado_size- square_size*0.4
     dado2_py = screen_height /2 - dado_size
     pygame.draw.rect(screen, black,(dado1_px, dado1_py, dado_size, dado_size), 2)
     pygame.draw.rect(screen, black,(dado2_px, dado2_py, dado_size, dado_size), 2)
@@ -430,6 +447,7 @@ while partida.status == "Jogando":
     desenhar_painel_jogo()
     exibir_info_posicao_atual()
     exibir_mensagem(partida.mensagem)
+    exibir_informações()
     
 
     # Atualizar a tela
