@@ -12,16 +12,21 @@ pygame.init()
 screen_info = pygame.display.Info()
 
 # Definir as dimensões da tela com base na resolução do sistema
-screen_width = int(screen_info.current_w * 0.95)
-screen_height = int(screen_info.current_h * 0.7)
+screen_width = tabuleiroMonopoly.screen_width
+screen_height = tabuleiroMonopoly.screen_height
 #Definindo o ponto x inicial do tabuleiro 
-pontoInicial = (max(screen_width, screen_height) - min(screen_width, screen_height)) / 2
+pontoInicial = tabuleiroMonopoly.pontoInicial
 # Calcular o tamanho dos quadrados proporcionalmente
-square_size = min(screen_width, screen_height) // 10  # 1/10 da menor dimensão da tela
+square_size = tabuleiroMonopoly.square_size
 #Largura e altura do tabuleiro
 board_size = square_size * 10
+board_center = pontoInicial + board_size / 2
+#Definir a posição x do painel
+painel_x = pontoInicial + board_size
 #Definir o centro do painel do jogo
 painel_center = (screen_width - pontoInicial - board_size) / 2 + pontoInicial + board_size
+#definir o tamanho do painel
+painel_size = screen_width - painel_x
 #Tamanho padrao das fontes
 font_size = int(square_size * 0.3)
 # Definir as cores
@@ -34,6 +39,7 @@ green = (0, 128, 0)
 purple = (128, 0, 128)
 blue = (0, 0, 255)
 gray = (220, 220, 220)
+dark_gray = (120, 120, 120)
 
 # Criar a tela
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -57,21 +63,21 @@ resultado = [1, 6]
 estado = 0
 rodada = 1
 
-botao_jogar_dados = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
+botao_jogar_dados = classesMonopoly.Button(painel_center - 60, 3 * screen_height/4, 120, 50,
                                            "Jogar Dados", pygame.font.Font(None, font_size), green, red, blue)
-botao_mover = classesMonopoly.Button(painel_center - 60, screen_height/2 + 60, 120, 50,
+botao_mover = classesMonopoly.Button(painel_center - 60, 3 * screen_height/4 + 60, 120, 50,
                                            "Mover", pygame.font.Font(None, font_size), green, red, blue)
-botao_comprar = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
+botao_comprar = classesMonopoly.Button(painel_center - 60, 3 * screen_height/4, 120, 50,
                                            "Comprar", pygame.font.Font(None, font_size), green, red, blue)
-botao_melhorar = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
+botao_melhorar = classesMonopoly.Button(painel_center - 60, 3 * screen_height/4, 120, 50,
                                            "Melhorar", pygame.font.Font(None, font_size), green, red, blue)
-botao_terminar = classesMonopoly.Button(painel_center - 60, screen_height/2 + 120, 120, 50,
+botao_terminar = classesMonopoly.Button(painel_center - 60, 3 * screen_height/4 + 120, 120, 50,
                                            "Terminar", pygame.font.Font(None, font_size), green, red, blue)
-botao_pagar = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
+botao_pagar = classesMonopoly.Button(painel_center - 60, 3 * screen_height/4, 120, 50,
                                            "Pagar", pygame.font.Font(None, font_size), green, red, blue)
-botao_pegar_carta = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
+botao_pegar_carta = classesMonopoly.Button(painel_center - 60, 3 * screen_height/4, 120, 50,
                                            "Pegar Carta", pygame.font.Font(None, font_size), green, red, blue)
-botao_ok = classesMonopoly.Button(painel_center - 60, screen_height/2, 120, 50,
+botao_ok = classesMonopoly.Button(painel_center - 60, 3 * screen_height/4, 120, 50,
                                            "Ok", pygame.font.Font(None, font_size), green, red, blue)
 
 #textBox_info = classesMonopoly.TextBox(pontoInicial + board_size + 5, )
@@ -97,10 +103,10 @@ def desenhar_casas_tabuleiro():
         else:    
             pygame.draw.rect(screen, casa.propriedade.cor, (casa.posicao_x + 4, casa.posicao_y + 4, casa.width - 8, casa.height / 3))
         # Desenha o titulo dentro do retângulo superior
-        draw_text_in_rect(casa.propriedade.titulo, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height / 3), pygame.font.Font(None, int(font_size * 0.7)), black)
-        draw_text_in_rect(casa.propriedade.texto, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height), pygame.font.Font(None, font_size), black)
+        #draw_text_in_rect(casa.propriedade.titulo, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height / 3), pygame.font.Font(None, int(font_size * 0.7)), black)
+        #draw_text_in_rect(casa.propriedade.texto, pygame.Rect(casa.posicao_x, casa.posicao_y, casa.width, casa.height), pygame.font.Font(None, font_size), black)
         for imagem in imagens:
-            screen.blit(imagem[0], imagem[1])
+            screen.blit(pygame.transform.scale(imagem[0], (square_size - 8, square_size - 8)), imagem[1])
 
 def desenhar_estatisticas_jogadores():
     for i in range(0,len(jogadores)):
@@ -112,6 +118,7 @@ def desenhar_estatisticas_jogadores():
         draw_text_in_rect("Quantidade Propriedades: " + str(len(jogadores[i].propriedades)), pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.5), 
                           pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
 
+#Desenha os botoes de acordo com o estado do jogo
 def desenhar_painel_jogo():
     #Jogar dados
     if estado == 0:
@@ -152,16 +159,53 @@ def exibir_info_posicao_atual():
     jogador = partida.jogador_Atual
     posicao = partida.jogador_Atual.posicao
     propriedade = casas[posicao].propriedade
+    #Escreve o nome do jogador no topo da tela
     draw_text_in_rect("Jogador: " + jogador.nome, pygame.Rect(px, 5, screen_width - px, screen_height * 0.05), 
                           pygame.font.Font(None, font_size), jogador.cor)
+    draw_text_in_rect(f"{propriedade.titulo}", 
+                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.03, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
+                        pygame.font.Font(None, font_size), black)
+    #Coloca a imagem da casa atual abaixo do nome
+    screen.blit(pygame.transform.scale(imagens[posicao][0], (painel_size / 2, painel_size / 2)), (painel_x + painel_size / 4, screen_height * 0.1))
     if casas[posicao].propriedade.info != None:
-        draw_text_in_rect(propriedade.info, pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.5, 
+        draw_text_in_rect(propriedade.info, pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.4, 
                                                                        screen_width - pontoInicial - board_size - 10, screen_height * 0.5), 
                                                                         pygame.font.Font(None, font_size), black) 
     else:
-        draw_text_in_rect(f"{propriedade.titulo} valor R$ {propriedade.valor_compra},00", 
-                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.5, screen_width - pontoInicial - board_size - 10, screen_height * 0.5), 
+        draw_text_in_rect(f"Valor Compra: R$ {propriedade.valor_compra},00", 
+                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.4, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
+        draw_text_in_rect(f"Proprietario: {propriedade.proprietario}", 
+                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.425, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
+                        pygame.font.Font(None, font_size), black)
+        draw_text_in_rect(f"Aluguel Nivel 1: R$ {propriedade.valor_aluguel[0]},00", 
+                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.45, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
+                        pygame.font.Font(None, font_size), black)
+        draw_text_in_rect(f"Aluguel Nivel 2: R$ {propriedade.valor_aluguel[1]},00", 
+                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.475, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
+                        pygame.font.Font(None, font_size), black)
+        draw_text_in_rect(f"Aluguel Nivel 3: R$ {propriedade.valor_aluguel[2]},00", 
+                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.5, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
+                        pygame.font.Font(None, font_size), black)
+        draw_text_in_rect(f"Aluguel Nivel 4: R$ {propriedade.valor_aluguel[3]},00", 
+                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.525, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
+                        pygame.font.Font(None, font_size), black)
+        draw_text_in_rect(f"Aluguel Nivel 5: R$ {propriedade.valor_aluguel[4]},00", 
+                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.55, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
+                        pygame.font.Font(None, font_size), black)
+
+def exibir_mensagem(mensagem):
+    print(f"Mensagem {mensagem}")
+    #Desenhar retangulo preenchido do titulo da caixa de texto
+    pygame.draw.rect(screen, dark_gray, (pontoInicial + square_size * 3, square_size * 2 - 20, square_size * 4, square_size * 0.25))
+    #Desenhar borda da caixa de texto
+    pygame.draw.rect(screen, dark_gray, (pontoInicial + square_size * 3, square_size * 2, square_size * 4, square_size * 2), 2)
+    #Escrever no retangulo preenchido do titulo
+    draw_text_in_rect(f"Mensagem para {partida.jogador_Atual.nome}", 
+                          pygame.Rect(pontoInicial + square_size * 3, square_size * 2 - 16, square_size * 4, square_size * 0.2), 
+                        pygame.font.Font(None, font_size), white)
+    text  = classesMonopoly.TextBox(pontoInicial + square_size * 3 + 4, square_size * 2 + 4, square_size * 4, square_size * 2, font_size, mensagem, black)
+    text.draw(screen)
 
 def desenhar_pinos():
     #Os pinos ocuparão apenas a parte branca dos quadrados
@@ -173,7 +217,7 @@ def desenhar_pinos():
         ix = 1 if i < 2 else 3
         iy = 1 if i % 2 == 0 else 3 
         pygame.draw.circle(screen, jogadores[i].cor, (px + ix * square_size//4, py + iy * square_size//4),
-                                                         casas[0].height * 0.1)
+                                                         casas[0].height * 0.15)
 
 def jogar_dados():
     dado1 = random.randint(0,6000) % 6 + 1
@@ -213,9 +257,9 @@ def desenhar_numeros_dado(pos_x, pos_y, dado_size, valor):
     
 def desenhar_dados(resultado):
     dado_size = square_size * 0.6
-    dado1_px = screen_width /2 - dado_size
+    dado1_px = board_center - dado_size
     dado1_py = screen_height /2 - dado_size
-    dado2_px = screen_width /2 + dado_size
+    dado2_px = board_center + dado_size
     dado2_py = screen_height /2 - dado_size
     pygame.draw.rect(screen, black,(dado1_px, dado1_py, dado_size, dado_size), 2)
     pygame.draw.rect(screen, black,(dado2_px, dado2_py, dado_size, dado_size), 2)
@@ -236,32 +280,38 @@ while partida.status == "Jogando":
             jogador = partida.jogador_Atual
             #Posição anterior
             pos_inicial = jogador.posicao
+            partida.mensagem = f"{jogador.nome} é a sua vez! Jogue os dados para se movimentar."
             #Caso o jogador tenha caido nas ferias na rodada anterior fica uma vez sem jogar
             if partida.jogador_Atual.ferias > 0:
-                print("Voce está de ferias e não jogara nessa rodada")
+                partida.mensagem = ("Voce está de ferias e não jogará nessa rodada")
                 partida.jogador_Atual.ferias -= 1
                 estado = 9
             if botao_jogar_dados.handle_event(event):
                 resultado = jogar_dados()
+                partida.mensagem = f"A soma dos dados deu {resultado[0] + resultado[1]}."
                 #Se o jogador está na prisão verificar se tirou numeros iguais no dado para sair
                 if jogador.posicao == 9 and jogador.prisao > 0:
                     if jogador.prisao < 4:
                         if resultado[0] == resultado[1]:
+                            partida.mensagem += "Você estava no congelamento mais como tirou números iguais nos dados conseguiu descongelar os seus negócios!"
                             jogador.prisao = 0
                             estado = 1
                         else:
-                            print(f"Voce não conseguiu sair!")
-                            print(f"Essa foi sua tentativa número {jogador.prisao}")
+                            partida.mensagem += (f"Voce não conseguiu sair! è necessário tirar valores iguais nos dados para descongelar seus negócios.")
+                            partida.mensagem += (f"Essa foi sua tentativa número {jogador.prisao}.")
                             jogador.prisao +=1
                             estado = 9
                     else:
-                        print("Voce pagou R$ 200,00 pra poder sair!")
+                        partida.mensagem += ("Você pagou R$ 200,00 pra poder sair! Na próxima rodada seus negócios estarão descongelados!")
                         if jogador.remover_dinheiro(200):
                             estado = 1
                         else:
+                            partida.mensagem += "Você não tem dinheiro suficiente para descongelar seus negócios tente novamente nos dados na próxima rodada."
                             jogador.prisao -= 1
+                            estado = 9
                 estado = 1
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        #Mover pino
         if estado == 1:
             if botao_mover.handle_event(event):
                 jogador.mover(resultado[0] + resultado[1])
@@ -269,67 +319,72 @@ while partida.status == "Jogando":
                 pos_atual = jogador.posicao
                 #Propriedade em que o jogador está
                 propriedade = casas[jogador.posicao].propriedade
-                print(f"Proprietario: {propriedade.proprietario}")
                 #Verificar se o jogador passou pelo inicio
                 if pos_atual < pos_inicial:
-                    print("Voce passou pelo inicio e recebeu R$ 200,00")
+                    partida.mensagem = ("Voce passou pelo inicio e recebeu R$ 200,00")
                     jogador.adicionar_dinheiro(200)
                 #Possibilidade de compra
                 if propriedade.proprietario == None:
+                    partida.mensagem = f"Esta propriedade ainda não foi adquirida por nenhum jogador. Gostaria de comprá-la?"
                     estado = 2
                 #Possibilidade de aumentar o nivel da propriedade
                 elif propriedade.proprietario == jogador:
+                    partida.mensagem = "Essa propriedade já é sua. Deseja melhorá-la"
                     estado = 3 
                 #E agora ?
                 elif jogador.posicao % 9 == 4:
+                    partida.mensagem = "E agora? Retire uma carta e descubra se hoje é seu dia de sorte."
                     estado = 4
                 #Nada a fazer
                 elif jogador.posicao == 0 or jogador.posicao == 9:
+                    partida.mensagem = "Nada a fazer aqui."
                     estado = 5
                 #Férias, uma rodada sem jogar
                 elif jogador.posicao == 18:
-                    print("Voce está de férias e ficará uma vez sem jogar!")
+                    partida.mensagem = ("Voce está de férias e ficará uma vez sem jogar!")
                     jogador.ferias = 1
                     estado = 6
                 #Vá para prisão
                 elif jogador.posicao == 27:
-                    print("Vá para a prisão sem receber nada!")
+                    partida.mensagem = ("Vá para a prisão sem receber nada!")
                     estado = 7
                 #Propriedade de outro jogador
                 else:
+                    partida.mensagem = f"Essa propriedade pertence a {propriedade.proprietario.nome}"
                     estado = 8
         #Possibilidade de compra
         if estado == 2:
             if botao_comprar.handle_event(event):
                 if jogador.comprar_propriedade(propriedade):
-                    print(f"{jogador.nome} comprou {propriedade.titulo}")
+                    partida.mensagem = (f"{jogador.nome} comprou {propriedade.titulo}")
                 else:
-                    print(f"Você não tem dinheiro suficiente")
+                    partida.mensagem = (f"Você não tem dinheiro suficiente")
                 estado = 9
             if botao_terminar.handle_event(event):
                 partida.jogada +=1
                 rodada = partida.jogada // 4
-                print(f"Jogada: {partida.jogada} Rodada: {rodada}")
+                partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
                 partida.jogador_Atual = partida.jogadores[partida.jogada % 4]
                 estado = 0
         #Possibilidade de aumentar o nivel da propriedade
         if estado == 3:
             if botao_melhorar.handle_event(event):
                 if propriedade.melhorar_propriedade():
-                    print(f"{propriedade.titulo} melhorada para o nivel {propriedade.nivel}")
+                    partida.mensagem = (f"{propriedade.titulo} melhorada para o nivel {propriedade.nivel}")
                 else:
-                    print(f"Você não tem dinheiro suficiente")
+                    partida.mensagem = (f"Você não tem dinheiro suficiente")
                 estado = 9
             if botao_terminar.handle_event(event):
                 partida.jogada +=1
                 rodada = partida.jogada // 4
-                print(f"Jogada: {partida.jogada} Rodada: {rodada}")
+                partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
                 partida.jogador_Atual = partida.jogadores[partida.jogada % 4]
                 estado = 0
         #E agora ?
         if estado == 4:
             if botao_pegar_carta.handle_event(event):
-                propriedade.sorteio_eAgora(jogador)
+                mensagem = propriedade.sorteio_eAgora(jogador)
+                partida.mensagem = (mensagem)
                 estado = 9
         #Nada a fazer
         if estado == 5:
@@ -349,17 +404,17 @@ while partida.status == "Jogando":
         if estado == 8:
             if botao_pagar.handle_event(event):
                 if jogador.pagar_aluguel(propriedade.proprietario, propriedade.valor_aluguel[propriedade.nivel - 1]):
-                    print(f"Você pagou R$ {propriedade.valor_aluguel[propriedade.nivel - 1]},00 para {propriedade.proprietario.nome}")
+                    partida.mensagem = (f"Você pagou R$ {propriedade.valor_aluguel[propriedade.nivel - 1]},00 para {propriedade.proprietario.nome}")
                     estado = 9
                 else:
-                    print("Voce não tem dinheiro suficiente")
+                    partida.mensagem = ("Voce não tem dinheiro suficiente")
                     estado = 9
         #Terminar a vez
         if estado == 9:
             if botao_terminar.handle_event(event):
                 partida.jogada +=1
                 rodada = partida.jogada // 4
-                print(f"Jogada: {partida.jogada} Rodada: {rodada}")
+                partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
                 partida.jogador_Atual = partida.jogadores[partida.jogada % 4]
                 estado = 0
             
@@ -374,6 +429,7 @@ while partida.status == "Jogando":
     #Verificar estado da jogada, jogar dados, mover, decidir, terminar
     desenhar_painel_jogo()
     exibir_info_posicao_atual()
+    exibir_mensagem(partida.mensagem)
     
 
     # Atualizar a tela

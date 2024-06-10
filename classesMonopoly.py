@@ -50,7 +50,7 @@ class Jogador:
             return False
 
     def __str__(self):
-        return f"Nome: {self.nome}, Posição: {self.posicao}, Dinheiro: {self.dinheiro}, Propriedades: {self.propriedades}"
+        return self.nome
 
 class Propriedade:
     def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, valor_compra, array_aluguel, info=None):
@@ -76,14 +76,15 @@ class Propriedade:
         print(f"Sorte: {sorte}, Revez: {revez}")
         if sorte > revez:
             premio = (sorte - revez)// 10 * 10
-            print(f"Premio: {premio}")
+            mensagem = f"Premio: {premio}"
             jogador.adicionar_dinheiro(premio)
         elif revez > sorte:
             multa = (revez - sorte) // 10 * 10
-            print(f"Multa: {multa}")
+            mensagem = f"Multa: {multa}"
             jogador.remover_dinheiro(multa)
         else:
-            print("Voce não ganhou nem perdeu nada")
+            mensagem = "Voce não ganhou nem perdeu nada"
+        return mensagem
 
 class CasaTabuleiro:
     def __init__(self, numero, posicao_x, posicao_y, width, height, propriedade):
@@ -102,6 +103,7 @@ class Partida:
         self.selic = 0.05
         self.jogadores = jogadores#Array com os jogadores
         self.jogador_Atual = jogadores[0]
+        self.mensagem = ""
 
 class Button:
     def __init__(self, x, y, width, height, text, font, base_color, hover_color, click_color):
