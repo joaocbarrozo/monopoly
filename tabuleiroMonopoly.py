@@ -187,7 +187,11 @@ def carregar_imagens():
     ferias_pos = (casas[18].posicao_x + 4, casas[18].posicao_y + 4)
     ferias = (ferias_img, ferias_pos)
     imagens.append(ferias)
-    #ferias
+    exemplo_img = pygame.image.load("./imagens/exemplo.png")
+    exemplo_img = pygame.transform.scale(exemplo_img, (square_size - 8, square_size - 8))
+    exemplo_pos = (casas[6].posicao_x + 4, casas[6].posicao_y + 4)
+    exemplo = (exemplo_img, exemplo_pos)
+    imagens.append(exemplo)
     #banco
     #papelaria
     #clinica mediaca
