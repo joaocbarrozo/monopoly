@@ -389,6 +389,8 @@ while partida.status == "Jogando":
                 if propriedade.melhorar_propriedade():
                     partida.mensagem = (f"{propriedade.titulo} melhorada para o nivel {propriedade.nivel}")
                 else:
+                    if(propriedade.nivel == 5):
+                        partida.mensagem = f"{propriedade.titulo} já está no nivel máximo."
                     partida.mensagem = (f"Você não tem dinheiro suficiente")
                 estado = 9
             if botao_terminar.handle_event(event):

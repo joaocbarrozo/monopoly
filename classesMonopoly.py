@@ -57,7 +57,8 @@ class Jogador:
         return self.nome
 
 class Propriedade:
-    def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, valor_compra, array_aluguel, info=None):
+    def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, valor_compra, info=None):
+        #self.taxa = valor_compra
         self.cor = cor
         self.borda_cor = borda_cor
         self.titulo = titulo
@@ -65,11 +66,11 @@ class Propriedade:
         self.nivel = nivel
         self.proprietario = proprietario# Definir banco para as posições especiais do tabuleiro como inicio, prisão sorte e revez e etc
         self.valor_compra = valor_compra
-        self.valor_aluguel = array_aluguel # Array com o valor do aluguel para cada nivel 5 posições
+        self.valor_aluguel = 100 # Array com o valor do aluguel para cada nivel 5 posições
         self.info = info
         
     def melhorar_propriedade(self):
-        if self.proprietario.saldo_suficiente(self.valor_compra):
+        if self.proprietario.saldo_suficiente(self.valor_compra) and self.nivel < 5:
             self.proprietario.remover_dinheiro(self.valor_compra)
             self.proprietario.patrimonio += self.valor_compra
             self.nivel += 1
