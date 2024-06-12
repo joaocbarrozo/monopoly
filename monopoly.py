@@ -196,7 +196,7 @@ def exibir_info_posicao_atual():
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.55, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
         draw_text_in_rect(f"Aluguel Nivel 5: R$ {propriedade.valor_aluguel[4]},00", 
-                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.55, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
+                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.575, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
 
 def exibir_mensagem(mensagem):

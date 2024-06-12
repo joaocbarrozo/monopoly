@@ -58,7 +58,26 @@ class Jogador:
 
 class Propriedade:
     def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, valor_compra, info=None):
-        #self.taxa = valor_compra
+        #Calculo da taxa de retorno de aluguel
+        taxa = random.randint(1, (1000 - valor_compra) / 10)
+        print(f"{titulo} taxa {taxa}")
+        taxa = taxa * 0.003 + 0.15
+        print(f"{titulo} taxa {taxa}")
+        #Criação e preenchimento do array aluguel
+        array_aluguel = []
+        for i in range(1,6):
+            valor = i * valor_compra * (taxa + (i-1) * 0.05)
+            resto = valor % 10
+            if resto < 5:
+                valor = int(valor - resto)
+            else:
+                valor = int(valor - resto + 5)
+            array_aluguel.append(valor)
+            print(f"aluguel i {i} {array_aluguel[i-1]}")
+        print(array_aluguel)
+        #Calculo do custo mensal
+        self.custo = valor_compra * 0.1
+        self.taxa = taxa
         self.cor = cor
         self.borda_cor = borda_cor
         self.titulo = titulo
@@ -66,7 +85,7 @@ class Propriedade:
         self.nivel = nivel
         self.proprietario = proprietario# Definir banco para as posições especiais do tabuleiro como inicio, prisão sorte e revez e etc
         self.valor_compra = valor_compra
-        self.valor_aluguel = 100 # Array com o valor do aluguel para cada nivel 5 posições
+        self.valor_aluguel = array_aluguel # Array com o valor do aluguel para cada nivel 5 posições
         self.info = info
         
     def melhorar_propriedade(self):
