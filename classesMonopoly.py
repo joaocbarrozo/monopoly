@@ -5,15 +5,22 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 
 class Jogador:
-    def __init__(self, nome, saldoInicial, cor):
+    def __init__(self, nome, posicao, saldoInicial, cor, ferias, congelamento, patrimonioInicial,
+                 distancia, rodadasCongelamento, rodadasFerias, voltas, premios, multas):
         self.nome = nome
-        self.posicao = 0  # Posição inicial do jogador no tabuleiro
+        self.posicao = posicao  # Posição inicial do jogador no tabuleiro
         self.dinheiro = saldoInicial  # Dinheiro inicial do jogador
         self.propriedades = []  # Lista para armazenar as propriedades do jogador
         self.cor = cor
-        self.ferias = 0
-        self.prisao = 0
-        self.patrimonio = saldoInicial
+        self.ferias = ferias
+        self.congelamento = congelamento
+        self.patrimonio = patrimonioInicial
+        self.distancia = distancia
+        self.rodadasCongelamento = rodadasCongelamento
+        self.rodadasFerias = rodadasFerias
+        self.voltas = voltas
+        self.premios = premios
+        self.multas = multas
 
     def mover(self, casas):
         self.posicao = (self.posicao + casas) % 36  # Há 36 casas no tabuleiro do Monopoly
@@ -23,8 +30,11 @@ class Jogador:
         self.patrimonio += quantidade
     
     def remover_dinheiro(self, quantidade):
-        self.dinheiro -= quantidade
-        self.patrimonio -= quantidade
+        if self.saldo_suficiente(quantidade):
+            self.dinheiro -= quantidade
+            self.patrimonio -= quantidade
+            return True
+        return False
     
     def saldo_suficiente(self, valor):
         if self.dinheiro >= valor:
@@ -76,7 +86,7 @@ class Propriedade:
             print(f"aluguel i {i} {array_aluguel[i-1]}")
         print(array_aluguel)
         #Calculo do custo mensal
-        self.custo = valor_compra * 0.1
+        self.custo_fixo = valor_compra * 0.1
         self.taxa = taxa
         self.cor = cor
         self.borda_cor = borda_cor
@@ -97,8 +107,8 @@ class Propriedade:
         return False
     
     def sorteio_eAgora(self, jogador):
-        sorte = random.randint(0, 1000)
-        revez = random.randint(0, 1000)
+        sorte = random.randint(0, 1000000) % 501
+        revez = random.randint(0, 1000000) % 501
         print(f"Sorte: {sorte}, Revez: {revez}")
         if sorte > revez:
             premio = (sorte - revez)// 10 * 10

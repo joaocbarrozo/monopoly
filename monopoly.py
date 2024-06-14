@@ -307,16 +307,16 @@ while partida.status == "Jogando":
                 resultado = jogar_dados()
                 partida.mensagem = f"A soma dos dados deu {resultado[0] + resultado[1]}."
                 #Se o jogador está na prisão verificar se tirou numeros iguais no dado para sair
-                if jogador.posicao == 9 and jogador.prisao > 0:
-                    if jogador.prisao < 4:
+                if jogador.posicao == 9 and jogador.congelamento > 0:
+                    if jogador.congelamento < 4:
                         if resultado[0] == resultado[1]:
-                            partida.mensagem += "Você estava no congelamento mais como tirou números iguais nos dados conseguiu descongelar os seus negócios!"
-                            jogador.prisao = 0
+                            partida.mensagem += "Você estava no congelamento mas como tirou números iguais nos dados conseguiu descongelar os seus negócios!"
+                            jogador.congelamento = 0
                             estado = 1
                         else:
                             partida.mensagem += (f"Voce não conseguiu sair! è necessário tirar valores iguais nos dados para descongelar seus negócios.")
-                            partida.mensagem += (f"Essa foi sua tentativa número {jogador.prisao}.")
-                            jogador.prisao +=1
+                            partida.mensagem += (f"Essa foi sua tentativa número {jogador.congelamento}.")
+                            jogador.congelamento +=1
                             estado = 9
                     else:
                         partida.mensagem += ("Você pagou R$ 200,00 pra poder sair! Na próxima rodada seus negócios estarão descongelados!")
@@ -324,9 +324,10 @@ while partida.status == "Jogando":
                             estado = 1
                         else:
                             partida.mensagem += "Você não tem dinheiro suficiente para descongelar seus negócios tente novamente nos dados na próxima rodada."
-                            jogador.prisao -= 1
+                            jogador.congelamento -= 1
                             estado = 9
-                estado = 1
+                else:
+                    estado = 1
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         #Mover pino
         if estado == 1:
@@ -361,9 +362,9 @@ while partida.status == "Jogando":
                     partida.mensagem = ("Voce está de férias e ficará uma vez sem jogar!")
                     jogador.ferias = 1
                     estado = 6
-                #Vá para prisão
+                #Vá para o congelamento
                 elif jogador.posicao == 27:
-                    partida.mensagem = ("Vá para a prisão sem receber nada!")
+                    partida.mensagem = ("Vá para o congelamento sem receber nada!")
                     estado = 7
                 #Propriedade de outro jogador
                 else:
@@ -413,20 +414,22 @@ while partida.status == "Jogando":
         if estado == 6:
             if botao_ok.handle_event(event):
                 estado = 9
-        #Vá para prisão
+        #Vá para o congelamento
         if estado == 7:
             if botao_ok.handle_event(event):
-                jogador.prisao = 1
+                jogador.congelamento = 1
                 jogador.posicao = 9
                 estado = 9
         #Propriedade de outro jogador
         if estado == 8:
             if botao_pagar.handle_event(event):
-                if jogador.pagar_aluguel(propriedade.proprietario, propriedade.valor_aluguel[propriedade.nivel - 1]):
+                if propriedade.proprietario.congelamento == 0:
+                    jogador.pagar_aluguel(propriedade.proprietario, propriedade.valor_aluguel[propriedade.nivel - 1])
                     partida.mensagem = (f"Você pagou R$ {propriedade.valor_aluguel[propriedade.nivel - 1]},00 para {propriedade.proprietario.nome}")
                     estado = 9
                 else:
-                    partida.mensagem = ("Voce não tem dinheiro suficiente")
+                    partida.mensagem = (f"{propriedade.proprietario.nome} está com os negócios congelados!")
+                    partida.mensagem += "Você não precisará pagar nada!"
                     estado = 9
         #Terminar a vez
         if estado == 9:
