@@ -52,22 +52,15 @@ class Jogador:
         return False
 
     def pagar_aluguel(self, proprietario, aluguel):
-        if self.saldo_suficiente(aluguel):
-            self.remover_dinheiro(aluguel)
-            proprietario.adicionar_dinheiro(aluguel)
-            return True
-        else:
-            # Se o jogador não tiver dinheiro suficiente para pagar o aluguel, ele está falido
-            # e deve sair do jogo
-            print(f"{self.nome} faliu!")
-            # Aqui você pode adicionar a lógica para remover o jogador do jogo
-            return False
+        self.remover_dinheiro(aluguel)
+        proprietario.adicionar_dinheiro(aluguel)
 
     def __str__(self):
         return self.nome
 
 class Propriedade:
-    def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, valor_compra, info=None):
+    def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, 
+                 valor_compra, info=None, visitas=0, vizinhanca=0, alugueis_recebidos=0):
         #Calculo da taxa de retorno de aluguel
         taxa = random.randint(1, (1000 - valor_compra) / 10)
         print(f"{titulo} taxa {taxa}")
@@ -85,8 +78,13 @@ class Propriedade:
             array_aluguel.append(valor)
             print(f"aluguel i {i} {array_aluguel[i-1]}")
         print(array_aluguel)
+        
         #Calculo do custo mensal
-        self.custo_fixo = valor_compra * 0.1
+        custo_mensal = []
+        for valor in array_aluguel:
+            custo_mensal.append(valor * 0.8) 
+            
+        self.custo_mensal = custo_mensal
         self.taxa = taxa
         self.cor = cor
         self.borda_cor = borda_cor
@@ -97,6 +95,9 @@ class Propriedade:
         self.valor_compra = valor_compra
         self.valor_aluguel = array_aluguel # Array com o valor do aluguel para cada nivel 5 posições
         self.info = info
+        self.visitas = visitas #Contabiliza as vezes que um jogador caiu nessa casa
+        self.vizinhanca = vizinhanca #Contabiliza as vezes que um jogador caiu nas casas vizinhas
+        self.alugueis_recebidos = alugueis_recebidos #Vlores recebidos dealuguel
         
     def melhorar_propriedade(self):
         if self.proprietario.saldo_suficiente(self.valor_compra) and self.nivel < 5:
@@ -114,10 +115,12 @@ class Propriedade:
             premio = (sorte - revez)// 10 * 10
             mensagem = f"Premio: {premio}"
             jogador.adicionar_dinheiro(premio)
+            jogador.premios += premio
         elif revez > sorte:
             multa = (revez - sorte) // 10 * 10
             mensagem = f"Multa: {multa}"
             jogador.remover_dinheiro(multa)
+            jogador.multas += multa
         else:
             mensagem = "Voce não ganhou nem perdeu nada"
         return mensagem
@@ -130,7 +133,7 @@ class CasaTabuleiro:
         self.width = width
         self.height = height
         self.propriedade = propriedade
-
+        
 class Partida:
     def __init__(self, jogadores):
         self.status = "Jogando"
