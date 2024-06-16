@@ -46,10 +46,10 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Mundo dos Negócios")
 
 #Inicia os jogadores
-jogador1 = classesMonopoly.Jogador("Dé", 1500, orange)
-jogador2 = classesMonopoly.Jogador("Gla", 1500, red)
-jogador3 = classesMonopoly.Jogador("Galinari", 1500, blue)
-jogador4 = classesMonopoly.Jogador("Tata", 1500, purple)
+jogador1 = classesMonopoly.Jogador("Dé", 1500, orange, 1500)
+jogador2 = classesMonopoly.Jogador("Gla", 1500, red, 1500)
+jogador3 = classesMonopoly.Jogador("Galinari", 1500, blue, 1500)
+jogador4 = classesMonopoly.Jogador("Tata", 1500, purple, 1500)
 jogadores = [jogador1, jogador2, jogador3, jogador4]
 
 #Instanciar cada casa do tabuleiro
@@ -218,7 +218,7 @@ def exibir_informações():
     #Desenhar borda da caixa de texto
     pygame.draw.rect(screen, dark_gray, (pontoInicial + square_size * 3, square_size * 6, square_size * 4, square_size * 2), 2)
     #Escrever no retangulo preenchido do titulo
-    draw_text_in_rect(f"Informações da partida", 
+    draw_text_in_rect(f"Rodada {partida.jogada // 4 + 1}", 
                           pygame.Rect(pontoInicial + square_size * 3, square_size * 6 - 16, square_size * 4, square_size * 0.2), 
                         pygame.font.Font(None, font_size), white)
     text  = classesMonopoly.TextBox(pontoInicial + square_size * 3 + 4, square_size * 6 + 4, square_size * 4, square_size * 2, font_size, "Informaçoes da partida", black)
@@ -301,7 +301,8 @@ while partida.status == "Jogando":
             #Caso o jogador tenha caido nas ferias na rodada anterior fica uma vez sem jogar
             if partida.jogador_Atual.ferias > 0:
                 partida.mensagem = ("Voce está de ferias e não jogará nessa rodada")
-                partida.jogador_Atual.ferias -= 1
+                jogador.rodadasFerias += 1
+                jogador.ferias -= 1
                 estado = 9
             if botao_jogar_dados.handle_event(event):
                 resultado = jogar_dados()
@@ -316,16 +317,17 @@ while partida.status == "Jogando":
                         else:
                             partida.mensagem += (f"Voce não conseguiu sair! è necessário tirar valores iguais nos dados para descongelar seus negócios.")
                             partida.mensagem += (f"Essa foi sua tentativa número {jogador.congelamento}.")
+                            jogador.rodadasCongelamento += 1
                             jogador.congelamento +=1
                             estado = 9
                     else:
                         partida.mensagem += ("Você pagou R$ 200,00 pra poder sair! Na próxima rodada seus negócios estarão descongelados!")
-                        if jogador.remover_dinheiro(200):
-                            estado = 1
-                        else:
+                        jogador.remover_dinheiro(200)
+                        estado = 1
+                        '''else:
                             partida.mensagem += "Você não tem dinheiro suficiente para descongelar seus negócios tente novamente nos dados na próxima rodada."
                             jogador.congelamento -= 1
-                            estado = 9
+                            estado = 9'''
                 else:
                     estado = 1
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
@@ -340,35 +342,36 @@ while partida.status == "Jogando":
                 #Verificar se o jogador passou pelo inicio
                 if pos_atual < pos_inicial:
                     partida.mensagem = ("Voce passou pelo inicio e recebeu R$ 200,00")
+                    jogador.voltas =+ 1
                     jogador.adicionar_dinheiro(200)
                 #Possibilidade de compra
                 if propriedade.proprietario == None:
-                    partida.mensagem = f"Esta propriedade ainda não foi adquirida por nenhum jogador. Gostaria de comprá-la?"
+                    partida.mensagem += f"Esta propriedade ainda não foi adquirida por nenhum jogador. Gostaria de comprá-la?"
                     estado = 2
                 #Possibilidade de aumentar o nivel da propriedade
                 elif propriedade.proprietario == jogador:
-                    partida.mensagem = "Essa propriedade já é sua. Deseja melhorá-la"
+                    partida.mensagem += "Essa propriedade já é sua. Deseja melhorá-la"
                     estado = 3 
                 #E agora ?
                 elif jogador.posicao % 9 == 4:
-                    partida.mensagem = "E agora? Retire uma carta e descubra se hoje é seu dia de sorte."
+                    partida.mensagem += "E agora? Retire uma carta e descubra se hoje é seu dia de sorte."
                     estado = 4
                 #Nada a fazer
                 elif jogador.posicao == 0 or jogador.posicao == 9:
-                    partida.mensagem = "Nada a fazer aqui."
+                    partida.mensagem += "Nada a fazer aqui."
                     estado = 5
                 #Férias, uma rodada sem jogar
                 elif jogador.posicao == 18:
-                    partida.mensagem = ("Voce está de férias e ficará uma vez sem jogar!")
+                    partida.mensagem += ("Voce está de férias e ficará uma vez sem jogar!")
                     jogador.ferias = 1
                     estado = 6
                 #Vá para o congelamento
                 elif jogador.posicao == 27:
-                    partida.mensagem = ("Vá para o congelamento sem receber nada!")
+                    partida.mensagem += ("Vá para o congelamento sem receber nada!")
                     estado = 7
                 #Propriedade de outro jogador
                 else:
-                    partida.mensagem = f"Essa propriedade pertence a {propriedade.proprietario.nome}"
+                    partida.mensagem += f"Essa propriedade pertence a {propriedade.proprietario.nome}"
                     estado = 8
         #Possibilidade de compra
         if estado == 2:
@@ -379,7 +382,7 @@ while partida.status == "Jogando":
                     partida.mensagem = (f"Você não tem dinheiro suficiente")
                 estado = 9
             if botao_terminar.handle_event(event):
-                partida.jogada +=1
+                partida.jogada += 1
                 rodada = partida.jogada // 4
                 partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
                 partida.jogador_Atual = partida.jogadores[partida.jogada % 4]
@@ -392,10 +395,11 @@ while partida.status == "Jogando":
                 else:
                     if(propriedade.nivel == 5):
                         partida.mensagem = f"{propriedade.titulo} já está no nivel máximo."
-                    partida.mensagem = (f"Você não tem dinheiro suficiente")
+                    else:
+                        partida.mensagem = (f"Você não tem dinheiro suficiente")
                 estado = 9
             if botao_terminar.handle_event(event):
-                partida.jogada +=1
+                partida.jogada += 1
                 rodada = partida.jogada // 4
                 partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
                 partida.jogador_Atual = partida.jogadores[partida.jogada % 4]

@@ -5,8 +5,8 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 
 class Jogador:
-    def __init__(self, nome, posicao, saldoInicial, cor, ferias, congelamento, patrimonioInicial,
-                 distancia, rodadasCongelamento, rodadasFerias, voltas, premios, multas):
+    def __init__(self, nome,  saldoInicial, cor, patrimonioInicial, posicao=0, ferias=0, congelamento=0, 
+                 distancia=0, rodadasCongelamento=0, rodadasFerias=0, voltas=0, premios=0, multas=0):
         self.nome = nome
         self.posicao = posicao  # Posição inicial do jogador no tabuleiro
         self.dinheiro = saldoInicial  # Dinheiro inicial do jogador
@@ -24,17 +24,15 @@ class Jogador:
 
     def mover(self, casas):
         self.posicao = (self.posicao + casas) % 36  # Há 36 casas no tabuleiro do Monopoly
+        self.distancia += casas
 
     def adicionar_dinheiro(self, quantidade):
         self.dinheiro += quantidade
         self.patrimonio += quantidade
     
     def remover_dinheiro(self, quantidade):
-        if self.saldo_suficiente(quantidade):
-            self.dinheiro -= quantidade
-            self.patrimonio -= quantidade
-            return True
-        return False
+        self.dinheiro -= quantidade
+        self.patrimonio -= quantidade
     
     def saldo_suficiente(self, valor):
         if self.dinheiro >= valor:
@@ -55,6 +53,12 @@ class Jogador:
         self.remover_dinheiro(aluguel)
         proprietario.adicionar_dinheiro(aluguel)
 
+    def calcularMultas(self, valor):
+        self.multas += valor
+
+    def calcularPremios(self, valor):
+        self.premios += valor
+
     def __str__(self):
         return self.nome
 
@@ -62,7 +66,7 @@ class Propriedade:
     def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, 
                  valor_compra, info=None, visitas=0, vizinhanca=0, alugueis_recebidos=0):
         #Calculo da taxa de retorno de aluguel
-        taxa = random.randint(1, (1000 - valor_compra) / 10)
+        taxa = random.randint(1, (1000 - valor_compra) // 10)
         print(f"{titulo} taxa {taxa}")
         taxa = taxa * 0.003 + 0.15
         print(f"{titulo} taxa {taxa}")
