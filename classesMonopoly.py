@@ -3,6 +3,15 @@ import random
 
 black = (0, 0, 0)
 white = (255, 255, 255)
+yellow = (255, 255, 0)
+orange = (255, 165, 0)
+red = (255, 0, 0)
+green = (0, 128, 0)
+purple = (128, 0, 128)
+blue = (0, 0, 255)
+gray = (220, 220, 220)
+dark_gray = (120, 120, 120)
+
 
 class Jogador:
     def __init__(self, nome,  saldoInicial, cor, patrimonioInicial, posicao=0, ferias=0, congelamento=0, 
@@ -220,3 +229,82 @@ class TextBox:
             text_surface = self.font.render(line, True, self.color)
             screen.blit(text_surface, (self.x, y))
             y += self.font.get_linesize()
+
+class InputText:
+    def __init__(self, x, y, width, height, font=None, font_size=32, text_color=black, cursor_color=black):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.font = pygame.font.Font(font, font_size)
+        self.text_color = text_color
+        self.cursor_color = cursor_color
+        self.text = ''
+        self.active = False
+        self.cursor_visible = True
+        self.cursor_timer = 0
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # Verifica se o campo de input foi clicado
+            self.active = self.rect.collidepoint(event.pos)
+        elif event.type == pygame.KEYDOWN and self.active:
+            if event.key == pygame.K_RETURN:
+                # Ação ao pressionar Enter (opcional)
+                print(self.text)
+                self.text = ''
+            elif event.key == pygame.K_BACKSPACE:
+                # Remove último caractere
+                self.text = self.text[:-1]
+            else:
+                # Adiciona caractere ao texto
+                self.text += event.unicode
+
+    def update(self):
+        # Atualiza o cursor piscante
+        self.cursor_timer += 1
+        if self.cursor_timer % 30 == 0:
+            self.cursor_visible = not self.cursor_visible
+
+    def draw(self, screen):
+        # Desenha o campo de input e o texto
+        pygame.draw.rect(screen, red, self.rect, 2)
+        
+        # Renderiza o texto
+        text_surface = self.font.render(self.text, True, self.text_color)
+        screen.blit(text_surface, (self.rect.x + 5, self.rect.y + 5))
+
+        # Desenha o cursor piscante
+        if self.active and self.cursor_visible:
+            cursor_x = self.rect.x + 5 + text_surface.get_width()
+            cursor_y = self.rect.y + 5
+            pygame.draw.line(screen, self.cursor_color, (cursor_x, cursor_y), (cursor_x, cursor_y + self.font.get_height()), 2)
+
+class NumberSelector:
+    def __init__(self, x, y, width, height, options):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.options = options
+        self.selected = 2
+        self.buttons = []
+        self.create_buttons()
+
+    def create_buttons(self):
+        button_width = self.rect.width // len(self.options)
+        button_height = self.rect.height
+        
+        for idx, option in enumerate(self.options):
+            button_rect = pygame.Rect(self.rect.x + idx * button_width, self.rect.y, button_width, button_height)
+            self.buttons.append((option, button_rect))
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for option, button_rect in self.buttons:
+                if button_rect.collidepoint(event.pos):
+                    self.selected = option
+                    print(f'Número selecionado: {self.selected}')
+
+    def draw(self, screen):
+        for option, button_rect in self.buttons:
+            color = red if self.selected == option else gray
+            pygame.draw.rect(screen, color, button_rect)
+            font = pygame.font.Font(None, 36)
+            text_surface = font.render(str(option), True, red)
+            text_rect = text_surface.get_rect(center=button_rect.center)
+            screen.blit(text_surface, text_rect)
