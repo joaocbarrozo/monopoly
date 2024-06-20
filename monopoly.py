@@ -60,7 +60,7 @@ imagens = tabuleiroMonopoly.carregar_imagens()
 #Variaveis globais
 partida = classesMonopoly.Partida(jogadores)
 resultado = [1, 6]
-tela = "menu"
+tela = ""
 estado = 0
 rodada = 1
 inputText_array = []
@@ -110,7 +110,8 @@ def desenhar_menu():
     botao_sair.draw(screen)
 
 def desenhar_novoJogo(qtd):
-    inputText_array = []
+    #inputText_array = []
+    screen.fill(white)
     draw_text_in_rect("Novo Jogo", pygame.Rect(0, 15, screen_width, 100), pygame.font.Font(None,2 * font_size),red)
     seletor_jogadores.draw(screen)
     for i in range(1, qtd + 1):
@@ -221,7 +222,9 @@ def exibir_info_posicao_atual():
         draw_text_in_rect(f"Aluguel Nivel 5: R$ {propriedade.valor_aluguel[4]},00", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.575, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
-
+        draw_text_in_rect(f"Popularidade: {propriedade.popularidade}", 
+                          pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.6, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
+                        pygame.font.Font(None, font_size), black)
 def exibir_mensagem(mensagem):
     print(f"Mensagem {mensagem}")
     #Desenhar retangulo preenchido do titulo da caixa de texto
@@ -334,8 +337,8 @@ while True:
                 pygame.quit()
                 sys.exit() 
             seletor_jogadores.handle_event(event)
-            for i in inputText_array:
-                i.handle_event(event)
+            for i in range(0, seletor_jogadores.selected):
+                inputText_array[i].handle_event(event)
                 
         screen.fill(white)
         #Posição do mouse
@@ -400,6 +403,9 @@ while True:
                     pos_atual = jogador.posicao
                     #Propriedade em que o jogador está
                     propriedade = casas[jogador.posicao].propriedade
+                    #Calcular popularidade
+                    casas[pos_atual].calcularPopularidade(casas)
+
                     #Verificar se o jogador passou pelo inicio
                     if pos_atual < pos_inicial:
                         partida.mensagem = ("Voce passou pelo inicio e recebeu R$ 200,00")

@@ -72,8 +72,8 @@ class Jogador:
         return self.nome
 
 class Propriedade:
-    def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, 
-                 valor_compra, info=None, visitas=0, vizinhanca=0, alugueis_recebidos=0):
+    def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, valor_compra, 
+                 info=None, visitas=0, vizinhanca=0, alugueis_recebidos=0, proximidades=0):
         #Calculo da taxa de retorno de aluguel
         taxa = random.randint(1, (1000 - valor_compra) // 10)
         print(f"{titulo} taxa {taxa}")
@@ -110,6 +110,8 @@ class Propriedade:
         self.info = info
         self.visitas = visitas #Contabiliza as vezes que um jogador caiu nessa casa
         self.vizinhanca = vizinhanca #Contabiliza as vezes que um jogador caiu nas casas vizinhas
+        self.proximidades = proximidades #Contabiliza as vezes que um jogador caiu a duas casas de distancia
+        self.popularidade = self.visitas * 3 + self.vizinhanca * 2 + self.proximidades
         self.alugueis_recebidos = alugueis_recebidos #Vlores recebidos dealuguel
         
     def melhorar_propriedade(self):
@@ -146,6 +148,23 @@ class CasaTabuleiro:
         self.width = width
         self.height = height
         self.propriedade = propriedade
+
+    #Calcular a popularidade de acordo com o numero de visitas a posição e posiçoes proximas
+    def calcularPopularidade(self, casas):
+        #Acrescentar 3 na popularidade da propriedade visitada
+        self.propriedade.visitas += 1
+        self.propriedade.popularidade += 3
+        #Acrescentar 2 a popularidade das casas vizinhas
+        casas[(self.numero + 1) % 36].propriedade.vizinhanca += 1
+        casas[(self.numero + 1) % 36].propriedade.popularidade += 2
+        casas[(self.numero - 1) % 36].propriedade.vizinhanca += 1
+        casas[(self.numero - 1) % 36].propriedade.popularidade += 2
+        #Acrescentar 1  a popularidade das casas a um quadrados de distancia
+        casas[(self.numero + 2) % 36].propriedade.proximidades += 1
+        casas[(self.numero + 2) % 36].propriedade.popularidade += 1
+        casas[(self.numero - 2) % 36].propriedade.proximidades += 1
+        casas[(self.numero - 2) % 36].propriedade.popularidade += 1
+        
         
 class Partida:
     def __init__(self, jogadores):
