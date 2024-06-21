@@ -63,6 +63,7 @@ resultado = [1, 6]
 tela = ""
 estado = 0
 rodada = 1
+ranking = []
 inputText_array = []
 
 #Botões
@@ -225,8 +226,9 @@ def exibir_info_posicao_atual():
         draw_text_in_rect(f"Popularidade: {propriedade.popularidade}", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.6, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
+        
 def exibir_mensagem(mensagem):
-    print(f"Mensagem {mensagem}")
+    #print(f"Mensagem {mensagem}")
     #Desenhar retangulo preenchido do titulo da caixa de texto
     pygame.draw.rect(screen, dark_gray, (pontoInicial + square_size * 3, square_size * 2 - 20, square_size * 4, square_size * 0.25))
     #Desenhar borda da caixa de texto
@@ -247,7 +249,7 @@ def exibir_informações():
     draw_text_in_rect(f"Rodada {partida.jogada // 4 + 1}", 
                           pygame.Rect(pontoInicial + square_size * 3, square_size * 6 - 16, square_size * 4, square_size * 0.2), 
                         pygame.font.Font(None, font_size), white)
-    text  = classesMonopoly.TextBox(pontoInicial + square_size * 3 + 4, square_size * 6 + 4, square_size * 4, square_size * 2, font_size, "Informaçoes da partida", black)
+    text  = classesMonopoly.TextBox(pontoInicial + square_size * 3 + 4, square_size * 6 + 4, square_size * 4, square_size * 2, font_size, f"Informaçoes da partida", black)
     text.draw(screen)
 
 def desenhar_pinos():
@@ -309,6 +311,16 @@ def desenhar_dados(resultado):
     desenhar_numeros_dado(dado1_px, dado1_py, dado_size, resultado[0])
     desenhar_numeros_dado(dado2_px, dado2_py, dado_size, resultado[1])
 
+def rankPopularidade(casas):
+        ranking = sorted(casas, key=lambda x: x.propriedade.popularidade, reverse=True)
+        for casa in ranking:
+            if casa.propriedade.proprietario == "Banco":
+                ranking.remove(casa)
+                print(casa.propriedade.titulo)
+        for casa in ranking:
+            print(f"{casa.propriedade.titulo} {casa.propriedade.popularidade}")
+        return ranking
+
 #Loop principal
 while True:
     while tela == "menu":
@@ -323,7 +335,7 @@ while True:
             if botao_sair.handle_event(event):
                 pygame.quit()
                 sys.exit()
-
+    
         screen.fill(white)
         #Posição do mouse
         pos = pygame.mouse.get_pos()
@@ -509,10 +521,14 @@ while True:
                     rodada = partida.jogada // 4
                     partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
                     partida.jogador_Atual = partida.jogadores[partida.jogada % 4]
+                    if rodada - 1 > 0 and (rodada - 1) % 4 == 0:
+                        ranking = rankPopularidade(casas)
+                        print("Rank de propriedades atualizado! " + str(rodada))
                     estado = 0
                 
         # Preencher a tela com a cor branca
         screen.fill(white)
+        #Calcular ranking de popularidade a cada 4 rodadas
         
         # Desenhar o tabuleiro
         desenhar_casas_tabuleiro()

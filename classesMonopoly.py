@@ -164,8 +164,7 @@ class CasaTabuleiro:
         casas[(self.numero + 2) % 36].propriedade.popularidade += 1
         casas[(self.numero - 2) % 36].propriedade.proximidades += 1
         casas[(self.numero - 2) % 36].propriedade.popularidade += 1
-        
-        
+
 class Partida:
     def __init__(self, jogadores):
         self.status = "Jogando"
@@ -267,7 +266,7 @@ class InputText:
         elif event.type == pygame.KEYDOWN and self.active:
             if event.key == pygame.K_RETURN:
                 # Ação ao pressionar Enter (opcional)
-                print(self.text)
+                #print(self.text)
                 self.text = ''
             elif event.key == pygame.K_BACKSPACE:
                 # Remove último caractere
