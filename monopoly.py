@@ -223,10 +223,10 @@ def exibir_info_posicao_atual():
         draw_text_in_rect(f"Aluguel Nivel 5: R$ {propriedade.valor_aluguel[4]},00", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.575, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
-        draw_text_in_rect(f"Popularidade: {propriedade.popularidade}", 
+        draw_text_in_rect(f"Ranking: {propriedade.ranking}", 
                           pygame.Rect(pontoInicial + board_size + 5, screen_height * 0.6, screen_width - pontoInicial - board_size - 10, screen_height * 0.1), 
                         pygame.font.Font(None, font_size), black)
-        
+
 def exibir_mensagem(mensagem):
     #print(f"Mensagem {mensagem}")
     #Desenhar retangulo preenchido do titulo da caixa de texto
@@ -312,13 +312,23 @@ def desenhar_dados(resultado):
     desenhar_numeros_dado(dado2_px, dado2_py, dado_size, resultado[1])
 
 def rankPopularidade(casas):
+        # Ordenar as casas de acordo com a popularidade de forma decrescente
         ranking = sorted(casas, key=lambda x: x.propriedade.popularidade, reverse=True)
+        # Remover as propriedades do banco do ranking 
         for casa in ranking:
+            print(casa.propriedade.titulo)
             if casa.propriedade.proprietario == "Banco":
                 ranking.remove(casa)
-                print(casa.propriedade.titulo)
-        for casa in ranking:
-            print(f"{casa.propriedade.titulo} {casa.propriedade.popularidade}")
+                print(f"{casa.propriedade.titulo} removida")
+        # Preencher o ranking atualizado de cada propriedade
+        for i in range(0, len(ranking)):
+            for casa in casas:
+                if ranking[i].propriedade.titulo == casa.propriedade.titulo:
+                    casa.propriedade.ranking = i + 1
+                    print(f"{i + 1}º {casa.propriedade.titulo} {casa.propriedade.popularidade}")
+                    if casa.propriedade.proprietario in jogadores:
+                        casa.propriedade.calculaReceitasDespesas()
+    
         return ranking
 
 #Loop principal
@@ -524,6 +534,7 @@ while True:
                     if rodada - 1 > 0 and (rodada - 1) % 4 == 0:
                         ranking = rankPopularidade(casas)
                         print("Rank de propriedades atualizado! " + str(rodada))
+
                     estado = 0
                 
         # Preencher a tela com a cor branca

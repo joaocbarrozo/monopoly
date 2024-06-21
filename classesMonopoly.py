@@ -62,23 +62,18 @@ class Jogador:
         self.remover_dinheiro(aluguel)
         proprietario.adicionar_dinheiro(aluguel)
 
-    def calcularMultas(self, valor):
-        self.multas += valor
-
-    def calcularPremios(self, valor):
-        self.premios += valor
-
     def __str__(self):
         return self.nome
 
 class Propriedade:
     def __init__(self, cor, borda_cor, titulo, texto, nivel, proprietario, valor_compra, 
-                 info=None, visitas=0, vizinhanca=0, alugueis_recebidos=0, proximidades=0):
+                 info=None, visitas=0, vizinhanca=0, alugueis_recebidos=0, proximidades=0,
+                 ranking=None, receitas=0, total_receitas=0, custo_mensal=0, total_custos=0):
         #Calculo da taxa de retorno de aluguel
         taxa = random.randint(1, (1000 - valor_compra) // 10)
         print(f"{titulo} taxa {taxa}")
         taxa = taxa * 0.003 + 0.15
-        print(f"{titulo} taxa {taxa}")
+        print(f"{titulo} taxa {taxa} valor {valor_compra}")
         #Criação e preenchimento do array aluguel
         array_aluguel = []
         for i in range(1,6):
@@ -89,15 +84,9 @@ class Propriedade:
             else:
                 valor = int(valor - resto + 5)
             array_aluguel.append(valor)
-            print(f"aluguel i {i} {array_aluguel[i-1]}")
-        print(array_aluguel)
-        
-        #Calculo do custo mensal
-        custo_mensal = []
-        for valor in array_aluguel:
-            custo_mensal.append(valor * 0.8) 
             
-        self.custo_mensal = custo_mensal
+        print(array_aluguel)
+            
         self.taxa = taxa
         self.cor = cor
         self.borda_cor = borda_cor
@@ -108,12 +97,17 @@ class Propriedade:
         self.valor_compra = valor_compra
         self.valor_aluguel = array_aluguel # Array com o valor do aluguel para cada nivel 5 posições
         self.info = info
-        self.visitas = visitas #Contabiliza as vezes que um jogador caiu nessa casa
-        self.vizinhanca = vizinhanca #Contabiliza as vezes que um jogador caiu nas casas vizinhas
-        self.proximidades = proximidades #Contabiliza as vezes que um jogador caiu a duas casas de distancia
+        self.visitas = visitas # Contabiliza as vezes que um jogador caiu nessa casa
+        self.vizinhanca = vizinhanca # Contabiliza as vezes que um jogador caiu nas casas vizinhas
+        self.proximidades = proximidades # Contabiliza as vezes que um jogador caiu a duas casas de distancia
         self.popularidade = self.visitas * 3 + self.vizinhanca * 2 + self.proximidades
-        self.alugueis_recebidos = alugueis_recebidos #Vlores recebidos dealuguel
-        
+        self.ranking = ranking
+        self.alugueis_recebidos = alugueis_recebidos # Valores recebidos de aluguel
+        self.receitas = receitas # Receitas recorrentes
+        self.total_receitas = total_receitas # Total das receitas recorrentes
+        self.custo_mensal = custo_mensal
+        self.total_custos = total_custos
+
     def melhorar_propriedade(self):
         if self.proprietario.saldo_suficiente(self.valor_compra) and self.nivel < 5:
             self.proprietario.remover_dinheiro(self.valor_compra)
@@ -139,6 +133,33 @@ class Propriedade:
         else:
             mensagem = "Voce não ganhou nem perdeu nada"
         return mensagem
+    
+    # Calculo de receitas e despesas
+    def calculaReceitasDespesas (self):
+        # Receita é calculada de acordo com o ranking de popularidade
+        if self.ranking < 3:
+            receita = int(self.valor_aluguel[self.nivel] * (2 + (random.randint(-50, 50) / 1000)))
+        elif self.ranking < 6:
+            receita = int(self.valor_aluguel[self.nivel] * (1.6 + (random.randint(-50, 50) / 1000)))
+        elif self.ranking < 11:
+            receita = int(self.valor_aluguel[self.nivel] * (1.3 + (random.randint(-50, 50) / 1000)))
+        elif self.ranking < 20:
+            receita = int(self.valor_aluguel[self.nivel] * (1 + (random.randint(-50, 50) / 1000)))
+        elif self.ranking < 24:
+            receita = int(self.valor_aluguel[self.nivel] * (0.6 + (random.randint(-50, 50) / 1000)))
+        else:
+            receita = int(self.valor_aluguel[self.nivel] * (0.3 + (random.randint(-50, 50) / 1000)))
+        # Despesa é calculada de acordo com o valor do aluguel atual e a receita
+        despesa = int(self.valor_aluguel[self.nivel] * random.randint(40, 60) / 100 + (receita * random.randint(40, 60) / 100))
+        # Registrar os valores na propriedade
+        self.receitas = receita
+        self.total_receitas += receita
+        self.custo_mensal = despesa
+        self.total_custos += despesa
+        # Calculo do resultado liquido e adicao do valor ao saldo do proprietario
+        resultado_liquido = receita - despesa
+        self.proprietario.adicionar_dinheiro(resultado_liquido)
+        print(f"{self.titulo} pos {self.ranking} aluguel {self.valor_aluguel[self.nivel]} receita R$ {receita},00 despesa {despesa} lucro {resultado_liquido}")
 
 class CasaTabuleiro:
     def __init__(self, numero, posicao_x, posicao_y, width, height, propriedade):
