@@ -15,7 +15,8 @@ dark_gray = (120, 120, 120)
 
 class Jogador:
     def __init__(self, nome,  saldoInicial, cor, patrimonioInicial, posicao=0, ferias=0, congelamento=0, 
-                 distancia=0, rodadasCongelamento=0, rodadasFerias=0, voltas=0, premios=0, multas=0):
+                 distancia=0, rodadasCongelamento=0, rodadasFerias=0, voltas=0, premios=0, multas=0,
+                 alugueis_recebidos=0, alugueis_pagos=0, lucro_liquido=0):
         self.nome = nome
         self.posicao = posicao  # Posição inicial do jogador no tabuleiro
         self.dinheiro = saldoInicial  # Dinheiro inicial do jogador
@@ -30,6 +31,9 @@ class Jogador:
         self.voltas = voltas
         self.premios = premios
         self.multas = multas
+        self.alugueis_recebidos = alugueis_recebidos
+        self.alugueis_pagos = alugueis_pagos
+        self.lucro_liquido = lucro_liquido
 
     def mover(self, casas):
         self.posicao = (self.posicao + casas) % 36  # Há 36 casas no tabuleiro do Monopoly
@@ -60,7 +64,9 @@ class Jogador:
 
     def pagar_aluguel(self, proprietario, aluguel):
         self.remover_dinheiro(aluguel)
+        self.alugueis_pagos += aluguel
         proprietario.adicionar_dinheiro(aluguel)
+        proprietario.alugueis_recebidos += aluguel
 
     def __str__(self):
         return self.nome
@@ -159,6 +165,7 @@ class Propriedade:
         # Calculo do resultado liquido e adicao do valor ao saldo do proprietario
         resultado_liquido = receita - despesa
         self.proprietario.adicionar_dinheiro(resultado_liquido)
+        self.proprietario.lucro_liquido += resultado_liquido
         print(f"{self.titulo} pos {self.ranking} aluguel {self.valor_aluguel[self.nivel]} receita R$ {receita},00 despesa {despesa} lucro {resultado_liquido}")
 
 class CasaTabuleiro:
@@ -189,7 +196,7 @@ class CasaTabuleiro:
 class Partida:
     def __init__(self, jogadores):
         self.status = "Jogando"
-        self.jogada = 0
+        self.jogada = 1
         self.inflacao = 0
         self.selic = 0.05
         self.jogadores = jogadores#Array com os jogadores

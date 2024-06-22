@@ -136,15 +136,26 @@ def desenhar_casas_tabuleiro():
 def desenhar_estatisticas_jogadores():
     for i in range(0,len(jogadores)):
         pygame.draw.rect(screen, black, (5, (screen_height // len(jogadores)) * i, pontoInicial - 5, screen_height // len(jogadores)), 2)
-        draw_text_in_rect(jogadores[i].nome, pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.1), 
+        draw_text_in_rect(jogadores[i].nome, pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.08), 
                           pygame.font.Font(None, int(font_size * 1.2)), jogadores[i].cor)
-        draw_text_in_rect("Saldo: R$ " + str(jogadores[i].dinheiro) + ",00", pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.3), 
+        draw_text_in_rect("Saldo: R$ " + str(jogadores[i].dinheiro) + ",00", pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.25), 
                           pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
-        draw_text_in_rect("Quantidade Propriedades: " + str(len(jogadores[i].propriedades)), pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.5), 
+        draw_text_in_rect("Quantidade Propriedades: " + str(len(jogadores[i].propriedades)), pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.43), 
                           pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
-        draw_text_in_rect("Patrimonio: R$ " + str(jogadores[i].patrimonio) + ",00", pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.7), 
+        draw_text_in_rect("Patrimonio: R$ " + str(jogadores[i].patrimonio) + ",00", pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.61), 
                           pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
-        
+        draw_text_in_rect("Alugueis Recebidos: " + str(jogadores[i].alugueis_recebidos), pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.80), 
+                          pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
+        draw_text_in_rect("Alugueis Pagos: " + str(jogadores[i].alugueis_pagos), pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 0.98), 
+                          pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
+        draw_text_in_rect("Voltas: " + str(jogadores[i].voltas), pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 1.16), 
+                          pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
+        draw_text_in_rect("Lucro Propriedades: " + str(jogadores[i].lucro_liquido), pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 1.35), 
+                          pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
+        draw_text_in_rect("Prêmios: " + str(jogadores[i].premios), pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 1.53), 
+                          pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
+        draw_text_in_rect("Multas: " + str(jogadores[i].multas), pygame.Rect(5, ((screen_height // len(jogadores)) * i) + 5, pontoInicial - 5, screen_height // len(jogadores) * 1.72), 
+                          pygame.font.Font(None, int(font_size * 1.1)), jogadores[i].cor)
 #Desenha os botoes de acordo com o estado do jogo
 def desenhar_painel_jogo():
     #Jogar dados
@@ -409,6 +420,7 @@ while True:
                         else:
                             partida.mensagem += ("Você pagou R$ 200,00 pra poder sair! Na próxima rodada seus negócios estarão descongelados!")
                             jogador.remover_dinheiro(200)
+                            jogador.congelamento = 0
                             estado = 1
                             '''else:
                                 partida.mensagem += "Você não tem dinheiro suficiente para descongelar seus negócios tente novamente nos dados na próxima rodada."
@@ -430,9 +442,9 @@ while True:
 
                     #Verificar se o jogador passou pelo inicio
                     if pos_atual < pos_inicial:
-                        partida.mensagem = ("Voce passou pelo inicio e recebeu R$ 200,00")
+                        partida.mensagem = ("Voce passou pelo inicio e recebeu R$ 150,00")
                         jogador.voltas =+ 1
-                        jogador.adicionar_dinheiro(200)
+                        jogador.adicionar_dinheiro(150)
                     #Possibilidade de compra
                     if propriedade.proprietario == None:
                         partida.mensagem += f"Esta propriedade ainda não foi adquirida por nenhum jogador. Gostaria de comprá-la?"
@@ -471,10 +483,15 @@ while True:
                         partida.mensagem = (f"Você não tem dinheiro suficiente")
                     estado = 9
                 if botao_terminar.handle_event(event):
-                    partida.jogada += 1
+                    partida.jogada +=1
                     rodada = partida.jogada // 4
                     partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
-                    partida.jogador_Atual = partida.jogadores[partida.jogada % 4]
+                    print(f"Jogada: {partida.jogada} Rodada: {rodada}")
+                    partida.jogador_Atual = partida.jogadores[(partida.jogada - 1) % 4]
+                    if rodada - 1 > 0 and (rodada - 1) % 4 == 0 and jogador == jogadores[len(jogadores) - 1]:
+                        ranking = rankPopularidade(casas)
+                        print("Rank de propriedades atualizado! " + str(rodada) + jogador.nome )
+
                     estado = 0
             #Possibilidade de aumentar o nivel da propriedade
             if estado == 3:
@@ -488,10 +505,15 @@ while True:
                             partida.mensagem = (f"Você não tem dinheiro suficiente")
                     estado = 9
                 if botao_terminar.handle_event(event):
-                    partida.jogada += 1
+                    partida.jogada +=1
                     rodada = partida.jogada // 4
                     partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
-                    partida.jogador_Atual = partida.jogadores[partida.jogada % 4]
+                    print(f"Jogada: {partida.jogada} Rodada: {rodada}")
+                    partida.jogador_Atual = partida.jogadores[(partida.jogada - 1) % 4]
+                    if rodada - 1 > 0 and (rodada - 1) % 4 == 0 and jogador == jogadores[len(jogadores) - 1]:
+                        ranking = rankPopularidade(casas)
+                        print("Rank de propriedades atualizado! " + str(rodada) + jogador.nome )
+
                     estado = 0
             #E agora ?
             if estado == 4:
@@ -530,10 +552,11 @@ while True:
                     partida.jogada +=1
                     rodada = partida.jogada // 4
                     partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
-                    partida.jogador_Atual = partida.jogadores[partida.jogada % 4]
-                    if rodada - 1 > 0 and (rodada - 1) % 4 == 0:
+                    print(f"Jogada: {partida.jogada} Rodada: {rodada}")
+                    partida.jogador_Atual = partida.jogadores[(partida.jogada - 1) % 4]
+                    if rodada - 1 > 0 and (rodada - 1) % 4 == 0 and jogador == jogadores[len(jogadores) - 1]:
                         ranking = rankPopularidade(casas)
-                        print("Rank de propriedades atualizado! " + str(rodada))
+                        print("Rank de propriedades atualizado! " + str(rodada) + jogador.nome )
 
                     estado = 0
                 
