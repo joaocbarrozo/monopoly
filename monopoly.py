@@ -443,7 +443,7 @@ while True:
                     #Verificar se o jogador passou pelo inicio
                     if pos_atual < pos_inicial:
                         partida.mensagem = ("Voce passou pelo inicio e recebeu R$ 150,00")
-                        jogador.voltas =+ 1
+                        jogador.voltas += 1
                         jogador.adicionar_dinheiro(150)
                     #Possibilidade de compra
                     if propriedade.proprietario == None:
