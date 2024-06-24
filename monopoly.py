@@ -4,9 +4,24 @@ import classesMonopoly
 import random
 import time
 import tabuleiroMonopoly
+from gtts import gTTS
+import os
 
 # Inicializar o Pygame
 pygame.init()
+
+# Inicializar o mixer de som do pygame
+def play_sound(sound_file):
+    pygame.mixer.init()  # Inicializa o mixer de áudio
+    pygame.mixer.music.load(sound_file)  # Carrega o arquivo de áudio
+    pygame.mixer.music.play()  # Reproduz o áudio
+
+# Adicionar a voz do Google para ler o texto
+def speak(text, lang='pt-br'):
+    tts = gTTS(text=text, lang=lang)
+    tts.save("output.mp3")  # Salva o texto convertido para um arquivo de áudio MP3
+    #os.system("cvlc --play-and-exit output.mp3")
+    play_sound("output.mp3")
 
 # Obter informações sobre a tela
 screen_info = pygame.display.Info()
@@ -47,9 +62,9 @@ pygame.display.set_caption("Mundo dos Negócios")
 
 #Inicia os jogadores
 jogador1 = classesMonopoly.Jogador("Dé", 1500, orange, 1500)
-jogador2 = classesMonopoly.Jogador("Gla", 1500, red, 1500)
+jogador2 = classesMonopoly.Jogador("Glá", 1500, red, 1500)
 jogador3 = classesMonopoly.Jogador("Galinari", 1500, blue, 1500)
-jogador4 = classesMonopoly.Jogador("Tata", 1500, purple, 1500)
+jogador4 = classesMonopoly.Jogador("Tatá", 1500, purple, 1500)
 jogadores = [jogador1, jogador2, jogador3, jogador4]
 
 #Instanciar cada casa do tabuleiro
@@ -394,7 +409,7 @@ while True:
                 jogador = partida.jogador_Atual
                 #Posição anterior
                 pos_inicial = jogador.posicao
-                partida.mensagem = f"{jogador.nome} é a sua vez! Jogue os dados para se movimentar."
+                partida.mensagem = f"{jogador.nome} é a sua vez!"
                 #Caso o jogador tenha caido nas ferias na rodada anterior fica uma vez sem jogar
                 if partida.jogador_Atual.ferias > 0:
                     partida.mensagem = ("Voce está de ferias e não jogará nessa rodada")
@@ -488,6 +503,7 @@ while True:
                     partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
                     print(f"Jogada: {partida.jogada} Rodada: {rodada}")
                     partida.jogador_Atual = partida.jogadores[(partida.jogada - 1) % 4]
+                    speak(f"{partida.jogador_Atual.nome} é a sua vez! ")
                     if rodada - 1 > 0 and (rodada - 1) % 4 == 0 and jogador == jogadores[len(jogadores) - 1]:
                         ranking = rankPopularidade(casas)
                         print("Rank de propriedades atualizado! " + str(rodada) + jogador.nome )
@@ -510,6 +526,7 @@ while True:
                     partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
                     print(f"Jogada: {partida.jogada} Rodada: {rodada}")
                     partida.jogador_Atual = partida.jogadores[(partida.jogada - 1) % 4]
+                    speak(f"{partida.jogador_Atual.nome} é a sua vez! ")
                     if rodada - 1 > 0 and (rodada - 1) % 4 == 0 and jogador == jogadores[len(jogadores) - 1]:
                         ranking = rankPopularidade(casas)
                         print("Rank de propriedades atualizado! " + str(rodada) + jogador.nome )
@@ -554,6 +571,7 @@ while True:
                     partida.mensagem = (f"Jogada: {partida.jogada} Rodada: {rodada}")
                     print(f"Jogada: {partida.jogada} Rodada: {rodada}")
                     partida.jogador_Atual = partida.jogadores[(partida.jogada - 1) % 4]
+                    speak(f"{partida.jogador_Atual.nome} é a sua vez! ")
                     if rodada - 1 > 0 and (rodada - 1) % 4 == 0 and jogador == jogadores[len(jogadores) - 1]:
                         ranking = rankPopularidade(casas)
                         print("Rank de propriedades atualizado! " + str(rodada) + jogador.nome )
