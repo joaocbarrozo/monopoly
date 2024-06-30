@@ -15,6 +15,11 @@ def play_sound(sound_file):
     pygame.mixer.init()  # Inicializa o mixer de áudio
     pygame.mixer.music.load(sound_file)  # Carrega o arquivo de áudio
     pygame.mixer.music.play()  # Reproduz o áudio
+    # Espera até que a reprodução do áudio termine
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)  # Aguarda um curto período de tempo para verificar novamente
+
+    pygame.mixer.quit()  # Finaliza o mixer de áudio
 
 # Adicionar a voz do Google para ler o texto
 def speak(text, lang='pt-br'):
@@ -65,7 +70,7 @@ jogador1 = classesMonopoly.Jogador("Dé", 1500, orange, 1500)
 jogador2 = classesMonopoly.Jogador("Glá", 1500, red, 1500)
 jogador3 = classesMonopoly.Jogador("Galinari", 1500, blue, 1500)
 jogador4 = classesMonopoly.Jogador("Tatá", 1500, purple, 1500)
-jogadores = [jogador1, jogador2, jogador3, jogador4]
+jogadores = [jogador2, jogador4, jogador3, jogador1]
 
 #Instanciar cada casa do tabuleiro
 casas = tabuleiroMonopoly.casas

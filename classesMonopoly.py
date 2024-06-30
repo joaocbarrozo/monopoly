@@ -144,19 +144,19 @@ class Propriedade:
     def calculaReceitasDespesas (self):
         # Receita é calculada de acordo com o ranking de popularidade
         if self.ranking < 3:
-            receita = int(self.valor_aluguel[self.nivel] * (2 + (random.randint(-50, 50) / 1000)))
+            receita = int(self.valor_aluguel[self.nivel - 1] * (2 + (random.randint(-50, 50) / 1000)))
         elif self.ranking < 6:
-            receita = int(self.valor_aluguel[self.nivel] * (1.6 + (random.randint(-50, 50) / 1000)))
+            receita = int(self.valor_aluguel[self.nivel - 1] * (1.6 + (random.randint(-50, 50) / 1000)))
         elif self.ranking < 11:
-            receita = int(self.valor_aluguel[self.nivel] * (1.3 + (random.randint(-50, 50) / 1000)))
+            receita = int(self.valor_aluguel[self.nivel - 1] * (1.3 + (random.randint(-50, 50) / 1000)))
         elif self.ranking < 20:
-            receita = int(self.valor_aluguel[self.nivel] * (1 + (random.randint(-50, 50) / 1000)))
+            receita = int(self.valor_aluguel[self.nivel - 1] * (1 + (random.randint(-50, 50) / 1000)))
         elif self.ranking < 24:
-            receita = int(self.valor_aluguel[self.nivel] * (0.6 + (random.randint(-50, 50) / 1000)))
+            receita = int(self.valor_aluguel[self.nivel - 1] * (0.6 + (random.randint(-50, 50) / 1000)))
         else:
-            receita = int(self.valor_aluguel[self.nivel] * (0.3 + (random.randint(-50, 50) / 1000)))
+            receita = int(self.valor_aluguel[self.nivel - 1] * (0.3 + (random.randint(-50, 50) / 1000)))
         # Despesa é calculada de acordo com o valor do aluguel atual e a receita
-        despesa = int(self.valor_aluguel[self.nivel] * random.randint(40, 60) / 100 + (receita * random.randint(40, 60) / 100))
+        despesa = int(self.valor_aluguel[self.nivel - 1] * random.randint(40, 60) / 100 + (receita * random.randint(40, 60) / 100))
         # Registrar os valores na propriedade
         self.receitas = receita
         self.total_receitas += receita
